@@ -1,5 +1,6 @@
 const  {Schema, model} = require('mongoose');
 
-const restaurantSchema = new Schema({
-    type: String,
-})
+const restaurantsSchema = new Schema({})
+
+
+module.exports = model('Restaurants', restaurantsSchema);
