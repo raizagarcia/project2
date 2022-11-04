@@ -4,7 +4,7 @@ const restaurantsSchema = new Schema({
     name : String,
     description : String,
     rating : Number,
-    reviews : [{type: Schema.Types.ObjectId, ref: 'Review'}],
+    comments : [{type: Schema.Types.ObjectId, ref: 'Comments'}],
     author : {
         type: Schema.Types.ObjectId,
         ref: "User"
