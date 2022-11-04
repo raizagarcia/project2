@@ -10,3 +10,13 @@ function openNav() {
 function closeNav() {
   document.getElementById("myNav").style.width = "0%";
 }
+
+const overlay = document.getElementById("preloader");
+
+window.addEventListener("load", function () {
+  setTimeout(function () {
+    overlay.style.opacity = "0";
+    overlay.style.transition = "0.3s ease-out";
+    overlay.style.display = "none";
+  }, 1000);
+});
