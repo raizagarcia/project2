@@ -1,6 +1,17 @@
 const  {Schema, model} = require('mongoose');
 
-const restaurantsSchema = new Schema({})
+const restaurantsSchema = new Schema({
+    name : String,
+    description : String,
+    rating : Number,
+    reviews : [{type: Schema.Types.ObjectId, ref: 'Review'}],
+    author : {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+}
+})
 
 
-module.exports = model('Restaurants', restaurantsSchema);
+const Restaurants= model('Restaurants', restaurantsSchema);
+
+module.exports = Restaurants;
