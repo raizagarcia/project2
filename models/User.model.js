@@ -20,6 +20,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    createdComments: [{type: Schema.Types.ObjectId, ref : "Comments"}],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
