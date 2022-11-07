@@ -33,6 +33,9 @@ app.use("/auth", authRoutes);
 const restaurantRoutes = require("./routes/restaurant.routes");
 app.use("/", restaurantRoutes);
 
+const commentsRoute = require("./routes/comments.routes");
+app.use("/", commentsRoute);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Restaurant = require("../models/Restaurant.model");
+const Comment = require('../models/Comments.model');
 
 router.post('/comments/create/:id', async (req, res, next) =>{
    

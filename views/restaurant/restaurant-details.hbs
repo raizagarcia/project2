@@ -18,4 +18,26 @@
 <br />
 <form action="/restaurant-delete/{{_id}}" method="post">
   <button type="submit">Delete restaurant</button>
+
+  <h4>Leave a comment</h4>
+
+<form action="/comments/create/{{restaurant._id}}" method="post">
+
+    <select name="author">
+        {{#each users}}
+            <option value="{{_id}}">{{username}}</option>
+        {{/each}}
+    </select>
+
+    <label for="content">Content</label>
+    <textarea name="content" id="content" cols="30" rows="10"></textarea>
+    <button type="submit">Create Review</button>
+</form>
+
+<hr/>
+
+{{#each restaurant.comment}}
+<div>
+    <p><span>By {{author.username}}: </span>{{content}}</p>
+</div>
 </form>
