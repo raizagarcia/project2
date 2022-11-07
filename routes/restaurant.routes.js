@@ -56,7 +56,9 @@ router.get("/restaurant-create", (req, res, next) =>
 // Receber a informação do form - POST (restaurant-create.hbs)
 router.post("/restaurant-create", async (req, res, next) => {
   try {
-    const { name, description, rating } = req.body;
+    let { name, description, rating } = req.body;
+    console.log(req.body);
+    rating = Number(rating);
 
     // Obrigar users a preencher os requisitos abaixo - Exemplo
     if (!name) {
