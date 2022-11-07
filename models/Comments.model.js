@@ -1,4 +1,4 @@
-const  {Schema, model} = require('mongoose');
+/*const  {Schema, model} = require('mongoose');
 
 const commentsSchema = new Schema({
     content : String,
@@ -12,4 +12,4 @@ const commentsSchema = new Schema({
 
 
 const Comments = model('Comments', commentsSchema);
-module.exports = Comments;
+module.exports = Comments;*/

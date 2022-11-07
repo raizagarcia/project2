@@ -1,0 +1,9 @@
+<h1>{{name}}</h1>
+<hr />
+<p>description: {{description}}</p>
+<a href="/restaurant-edit/{{_id}}">Edit restaurant</a>
+<br />
+<br />
+<form action="/restaurant-delete/{{_id}}" method="post">
+  <button type="submit">Delete restaurant</button>
+</form>
