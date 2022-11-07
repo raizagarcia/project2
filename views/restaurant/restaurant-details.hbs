@@ -1,43 +1,57 @@
-<h1>{{name}}</h1>
+<h1>{{restaurant.name}}</h1>
+
 <hr />
-<p>description: {{description}}</p>
+
+<p>description: {{restaurant.description}}</p>
+
 <div class="rating">
-  <input type="radio" id="star5" name="rating" value="{{rating}}" />
+  <input type="radio" id="star5" name="rating" value="{{restaurant.rating}}" />
   <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
-  <input type="radio" id="star4" name="rating" value="{{rating}}" />
+  <input type="radio" id="star4" name="rating" value="{{restaurant.rating}}" />
   <label class="star" for="star4" title="Great" aria-hidden="true"></label>
-  <input type="radio" id="star3" name="rating" value="{{rating}}" />
+  <input type="radio" id="star3" name="rating" value="{{restaurant.rating}}" />
   <label class="star" for="star3" title="Good" aria-hidden="true"></label>
-  <input type="radio" id="star2" name="rating" value="{{rating}}" />
+  <input type="radio" id="star2" name="rating" value="{{restaurant.rating}}" />
   <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
-  <input type="radio" id="star1" name="rating" value="{{rating}}" />
+  <input type="radio" id="star1" name="rating" value="{{restaurant.rating}}" />
   <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
 </div>
-<a href="/restaurant-edit/{{_id}}">Edit restaurant</a>
+
+<a href="/restaurant-edit/{{restaurant._id}}">Edit restaurant</a>
+
 <br />
 <br />
+
 <form action="/restaurant-delete/{{_id}}" method="post">
+
   <button type="submit">Delete restaurant</button>
 
-  <h4>Leave a comment</h4>
-
-<form action="/comments/create/{{restaurant._id}}" method="post">
-
-    <select name="author">
-        {{#each users}}
-            <option value="{{_id}}">{{username}}</option>
-        {{/each}}
-    </select>
-
-    <label for="content">Content</label>
-    <textarea name="content" id="content" cols="30" rows="10"></textarea>
-    <button type="submit">Create Review</button>
 </form>
 
-<hr/>
+<hr />
 
-{{#each restaurant.comment}}
-<div>
+<h4>Leave a comment</h4>
+
+<form action="/comment/create/{{restaurant._id}}" method="post">
+
+  <select name="author">
+    {{#each users}}
+      <option value="{{_id}}">{{username}}</option>
+    {{/each}}
+  </select>
+
+  <label for="content">Content</label>
+  <textarea name="content" id="content" cols="30" rows="10"></textarea>
+  <button type="submit">Create Comment</button>
+</form>
+
+<hr />
+
+{{#each restaurant.comments}}
+  <div>
     <p><span>By {{author.username}}: </span>{{content}}</p>
-</div>
-</form>
+    <form action="/comment/delete/{{_id}}" method="post">
+      <button type="submit">X</button>
+    </form>
+  </div>
+{{/each}}

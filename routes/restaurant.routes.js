@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Restaurant = require("../models/Restaurant.model");
-//const User = require('../models/User.model');
-//const Comments = require('../models/Comments.model');
+const User = require("../models/User.model");
+const Comment = require("../models/Comments.model");
 
 // Get all restaurants (restaurant-list.hbs)
 router.get("/restaurant-list", async (req, res, next) => {
@@ -16,28 +16,21 @@ router.get("/restaurant-list", async (req, res, next) => {
 
 // Individual restaurant - details route (restaurant-details.hbs)
 router.get("/restaurant-details/:id", async (req, res, next) => {
-  /*try {
-        const {id} = req.params;
-        
-        const singleRestaurant = await Restaurant.findById(id)
-        .populate('comments author')
-        .populate({
-            path : 'comments',
-            populate: {
-                path: 'author',
-                model: 'User',
-            }
-        });
-        
-        res.render('restaurants/restaurant-details', {restaurant});
-    } catch (error) {
-     console.log(error);
-     next(error);   
-    }*/
   try {
     const { id } = req.params;
-    const singleRestaurant = await Restaurant.findById(id);
-    res.render("restaurant/restaurant-details", singleRestaurant);
+    //get all the users
+    const users = await User.find();
+    //get the specific book
+    const restaurant = await Restaurant.findById(id)
+      .populate("comments author")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      });
+    res.render("restaurant/restaurant-details", { restaurant, users });
   } catch (error) {
     console.log(error);
     next(error);
@@ -113,6 +106,50 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
     await Restaurant.findByIdAndRemove(id);
     // Em vez de fazer render, redirecciona para o restaurante acabado de editar
     res.redirect(`/restaurant-list/`);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+//Reviews (Individual Books)
+router.post("/comment/create/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { content, author } = req.body;
+  try {
+    //Create the review
+    const newComment = await Comment.create({ content, author });
+
+    //Add the review to the restaurant
+    const restaurantUpdate = await Restaurant.findByIdAndUpdate(id, {
+      $push: {
+        comments: newComment._id,
+      },
+    });
+
+    //Add the review to the user
+    const userUpdate = await User.findByIdAndUpdate(author, {
+      $push: {
+        createdComments: newComment._id,
+      },
+    });
+
+    //Redirect to the same page
+    res.redirect(`/restaurant-details/${id}`);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.post("/comment/delete/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const removedComment = await Comment.findByIdAndRemove(id);
+    await User.findByIdAndUpdate(removedComment.author, {
+      $pull: { createdComments: removedComment._id },
+    });
+    res.redirect(`/restaurant-details/${id}`);
   } catch (error) {
     console.log(error);
     next(error);
