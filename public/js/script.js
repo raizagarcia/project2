@@ -66,7 +66,7 @@ function initMap() {
   //const strictBoundsInputElement = document.getElementById("use-strict-bounds");
   const options = {
     fields: ["place_id", "geometry", "name"],
-    photo: results[i].photos[0].getUrl({ maxWidth: 100, maxHeight: 100 }),
+    //photo: results[i].photos[0].getUrl({ maxWidth: 100, maxHeight: 100 }),
     componentRestrictions: { country: ["PT"] },
     types: ["restaurant"],
   };
