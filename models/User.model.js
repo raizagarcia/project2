@@ -22,6 +22,7 @@ const userSchema = new Schema(
     },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    imageUrl: String,
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
