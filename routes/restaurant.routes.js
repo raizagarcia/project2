@@ -49,7 +49,7 @@ router.get("/restaurant-create", (req, res, next) =>
 // Receber a informação do form - POST (restaurant-create.hbs)
 router.post("/restaurant-create", async (req, res, next) => {
   try {
-    let { name, description, rating } = req.body;
+    let { name, placeId, description, rating } = req.body;
     console.log(req.body);
     rating = Number(rating);
 
@@ -60,6 +60,7 @@ router.post("/restaurant-create", async (req, res, next) => {
 
     const createdRestaurant = await Restaurant.create({
       name,
+      placeId,
       description,
       rating,
     });
