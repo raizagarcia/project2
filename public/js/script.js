@@ -108,8 +108,8 @@ function initMap() {
       map.fitBounds(place.geometry.viewport);
       document.getElementById("autocomplete").value = place.name;
       document.getElementById("placeId").value = place.place_id;
-      console.log(place.photos);
-      document.getElementById("imgRest").src = place.photos[0].getUrl({
+      document.getElementById("imgRestaurant").style.display = "block";
+      document.getElementById("imgRestaurant").src = place.photos[0].getUrl({
         maxWidth: 500,
         maxHeight: 500,
       });
