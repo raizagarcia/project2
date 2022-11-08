@@ -13,5 +13,5 @@ const reviewSchema = new Schema({
   },
 });
 
-const Comments = model("Comments", reviewSchema);
-module.exports = Comments;
+const Review = model("Reviews", reviewSchema);
+module.exports = Review;
