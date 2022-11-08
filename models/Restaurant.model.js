@@ -6,10 +6,8 @@ const restaurantSchema = new Schema({
     required: true,
   },
   placeId: String,
-  author: String,
-  description: String,
-  rating: Number,
   comments: [{ type: Schema.Types.ObjectId, ref: "Comments" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   /*author: {
     type: Schema.Types.ObjectId,
     ref: "User",

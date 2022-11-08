@@ -49,7 +49,7 @@ router.get("/restaurant-create", (req, res, next) =>
 // Receber a informação do form - POST (restaurant-create.hbs)
 router.post("/restaurant-create", async (req, res, next) => {
   try {
-    let { name, placeId, description, rating } = req.body;
+    let { name, placeId } = req.body;
     console.log(req.body);
     rating = Number(rating);
 
@@ -61,9 +61,8 @@ router.post("/restaurant-create", async (req, res, next) => {
     const createdRestaurant = await Restaurant.create({
       name,
       placeId,
-      description,
-      rating,
     });
+
     // Em vez de fazer render, redirecciona para o restaurante acabado de criar
     res.redirect(`/restaurant-details/${createdRestaurant._id}`);
   } catch (error) {
@@ -116,10 +115,10 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
 //Reviews (Individual Books)
 router.post("/comment/create/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { content, author } = req.body;
+  const { content, placeId, author } = req.body;
   try {
     //Create the review
-    const newComment = await Comment.create({ content, author });
+    const newComment = await Comment.create({ content, placeId, author });
 
     //Add the review to the restaurant
     const restaurantUpdate = await Restaurant.findByIdAndUpdate(id, {
