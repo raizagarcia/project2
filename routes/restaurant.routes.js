@@ -112,7 +112,7 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
   }
 });
 
-//Reviews (Individual Books)
+//Reviews (Individual restaurant)
 router.post("/comment/create/:id", async (req, res, next) => {
   const { id } = req.params;
   const { content, placeId, author } = req.body;
