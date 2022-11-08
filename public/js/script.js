@@ -65,7 +65,7 @@ function initMap() {
   //const biasInputElement = document.getElementById("use-location-bias");
   //const strictBoundsInputElement = document.getElementById("use-strict-bounds");
   const options = {
-    fields: ["place_id", "geometry", "name", "photo"],
+    fields: ["place_id", "geometry", "name", "photo", "formatted_address"],
     //photo: results[i].photos[0].getUrl({ maxWidth: 100, maxHeight: 100 }),
     componentRestrictions: { country: ["PT"] },
     types: ["restaurant"],
@@ -106,8 +106,11 @@ function initMap() {
     // If the place has a geometry, then present it on a map.
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
+      console.log(place.formatted_address);
       document.getElementById("autocomplete").value = place.name;
       document.getElementById("placeId").value = place.place_id;
+      document.getElementById("country").value =
+        place.formatted_address.types[0];
       document.getElementById("imgRestaurant").style.display = "block";
       document.getElementById("imgRestaurant").src = place.photos[0].getUrl({
         maxWidth: 500,
@@ -121,8 +124,7 @@ function initMap() {
     marker.setPosition(place.geometry.location);
     marker.setVisible(true);
     //infowindowContent.children["place-name"].textContent = place.name;
-    infowindowContent.children["place-address"].textContent =
-      place.formatted_address;
+    //infowindowContent.children["place-address"].textContent = place.formatted_address;
     infowindow.open(map, marker);
   });
   /*
