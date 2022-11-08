@@ -65,7 +65,7 @@ function initMap() {
   //const biasInputElement = document.getElementById("use-location-bias");
   //const strictBoundsInputElement = document.getElementById("use-strict-bounds");
   const options = {
-    fields: ["place_id", "geometry", "name"],
+    fields: ["place_id", "geometry", "name", "photo"],
     //photo: results[i].photos[0].getUrl({ maxWidth: 100, maxHeight: 100 }),
     componentRestrictions: { country: ["PT"] },
     types: ["restaurant"],
@@ -86,7 +86,7 @@ function initMap() {
   infowindow.setContent(infowindowContent);
 
   const marker = new google.maps.Marker({
-    map,
+    map: map,
     anchorPoint: new google.maps.Point(0, -29),
   });
 
@@ -108,6 +108,11 @@ function initMap() {
       map.fitBounds(place.geometry.viewport);
       document.getElementById("autocomplete").value = place.name;
       document.getElementById("placeId").value = place.place_id;
+      console.log(place.photos);
+      document.getElementById("imgRest").src = place.photos[0].getUrl({
+        maxWidth: 500,
+        maxHeight: 500,
+      });
     } else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
@@ -115,7 +120,7 @@ function initMap() {
 
     marker.setPosition(place.geometry.location);
     marker.setVisible(true);
-    infowindowContent.children["place-name"].textContent = place.name;
+    //infowindowContent.children["place-name"].textContent = place.name;
     infowindowContent.children["place-address"].textContent =
       place.formatted_address;
     infowindow.open(map, marker);

@@ -18,12 +18,12 @@ router.get("/restaurant-list", async (req, res, next) => {
 // Individual restaurant - details route (restaurant-details.hbs)
 router.get("/restaurant-details/:id", async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id;
     //get all the users
     const users = await User.find();
-    //get the specific book
+    //get the specific restaurant
     const restaurant = await Restaurant.findById(id)
-      .populate("comments author")
+      .populate("comments")
       .populate({
         path: "comments",
         populate: {
@@ -31,7 +31,7 @@ router.get("/restaurant-details/:id", async (req, res, next) => {
           model: "User",
         },
       });
-    res.render("restaurant/restaurant-create", { restaurant, users });
+    res.render("restaurant/restaurant-details", { restaurant, users });
   } catch (error) {
     console.log(error);
     next(error);
@@ -58,7 +58,7 @@ router.post("/restaurant-create", async (req, res, next) => {
     });
 
     // Redirecciona para a review
-    res.redirect(`/review-create/`);
+    res.redirect(`/review-create/${createdRestaurant._id}`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -66,14 +66,18 @@ router.post("/restaurant-create", async (req, res, next) => {
 });
 
 // Display a página de form - GET (review-create.hbs)
-router.get("/review-create", (req, res, next) =>
-  res.render("restaurant/review-create")
-);
+router.get("/review-create/:id", (req, res, next) => {
+  const restId = req.params.id;
+  res.render("restaurant/review-create", { restId });
+});
 // Receber a informação do form - POST (review-create.hbs)
-router.post("/review-create", async (req, res, next) => {
+router.post("/review-create/:id", async (req, res, next) => {
   try {
+    const restaurantId = req.params.id;
     let { description, rating } = req.body;
     rating = Number(rating);
+
+    console.log(restaurantId);
 
     // Obrigar users a preencher os requisitos abaixo - Exemplo
     if (!rating) {
@@ -85,8 +89,26 @@ router.post("/review-create", async (req, res, next) => {
       rating,
     });
 
+    const restaurantUpdate = await Restaurant.findByIdAndUpdate(restaurantId, {
+      $push: {
+        reviews: createdReview._id,
+      },
+    });
+
+    const userUpdate = await User.findByIdAndUpdate(req.session.user._id, {
+      $push: {
+        reviews: createdReview._id,
+      },
+    });
+
+    const reviewUpdate = await Review.findByIdAndUpdate(createdReview._id, {
+      $push: {
+        restaurant: restaurantId,
+      },
+    });
+
     // Em vez de fazer render, redirecciona para o restaurante acabado de criar
-    res.redirect(`/restaurant-details/${createdReview._id}`);
+    res.redirect(`/restaurant-details/${restaurantId}`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -134,7 +156,7 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
   }
 });
 
-//Reviews (Individual Books)
+//Reviews (Individual Restaurant)
 router.post("/comment/create/:id", async (req, res, next) => {
   const { id } = req.params;
   const { content, author } = req.body;
@@ -152,7 +174,7 @@ router.post("/comment/create/:id", async (req, res, next) => {
     //Add the review to the user
     const userUpdate = await User.findByIdAndUpdate(author, {
       $push: {
-        createdComments: newComment._id,
+        comments: newComment._id,
       },
     });
 
@@ -169,7 +191,7 @@ router.post("/comment/delete/:id", async (req, res, next) => {
   try {
     const removedComment = await Comment.findByIdAndRemove(id);
     await User.findByIdAndUpdate(removedComment.author, {
-      $pull: { createdComments: removedComment._id },
+      $pull: { comments: removedComment._id },
     });
     res.redirect(`/restaurant-details/${id}`);
   } catch (error) {
