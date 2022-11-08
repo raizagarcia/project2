@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fileUploader = require('../config/cloudinary.config');
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -158,6 +159,17 @@ router.get("/logout", isLoggedIn, (req, res) => {
     
   });
 });
+
+// This route has the image upload example 
+/* router.post('/profile', fileUploader.single('profile-photo'), (req, res) => {
+  const { title, description } = req.body;
+ 
+  Movie.create({ title, description, imageUrl: req.file.path })
+    .then(newlyCreatedMovieFromDB => {
+      console.log(newlyCreatedMovieFromDB);
+    })
+    .catch(error => console.log(`Error while creating a new movie: ${error}`));
+}); */
 
 /* router.post("/logout", isLoggedIn, (req, res) => {
   if (!req.session) res.redirect('/');
