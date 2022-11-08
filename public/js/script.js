@@ -22,7 +22,7 @@ window.addEventListener("load", function () {
 });
 
 /* AUTOCOMPLETE */
-let autocomplete;
+/*let autocomplete;
 function initAutocomplete() {
   autocomplete = new google.maps.places.Autocomplete(
     document.getElementById("autocomplete"),
@@ -44,7 +44,7 @@ function onPlaceChanged() {
     document.getElementById("autocomplete").value = place.name;
     document.getElementById("placeId").value = place.place_id;
   }
-}
+}*/
 
 /**
  * @license
@@ -56,18 +56,19 @@ function onPlaceChanged() {
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 40.749933, lng: -73.98633 },
-    zoom: 13,
+    center: { lat: 38.711921844488735, lng: -9.124157359756076 },
+    zoom: 10,
     mapTypeControl: true,
   });
   const card = document.getElementById("pac-card");
   const input = document.getElementById("autocomplete");
-  const biasInputElement = document.getElementById("use-location-bias");
-  const strictBoundsInputElement = document.getElementById("use-strict-bounds");
+  //const biasInputElement = document.getElementById("use-location-bias");
+  //const strictBoundsInputElement = document.getElementById("use-strict-bounds");
   const options = {
-    fields: ["formatted_address", "geometry", "name"],
-    strictBounds: false,
-    types: ["establishment"],
+    fields: ["place_id", "geometry", "name"],
+    photo: results[i].photos[0].getUrl({ maxWidth: 100, maxHeight: 100 }),
+    componentRestrictions: { country: ["PT"] },
+    types: ["restaurant"],
   };
 
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
@@ -105,6 +106,8 @@ function initMap() {
     // If the place has a geometry, then present it on a map.
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
+      document.getElementById("autocomplete").value = place.name;
+      document.getElementById("placeId").value = place.place_id;
     } else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
@@ -117,7 +120,7 @@ function initMap() {
       place.formatted_address;
     infowindow.open(map, marker);
   });
-
+  /*
   // Sets a listener on a radio button to change the filter type on Places
   // Autocomplete.
   function setupClickListener(id, types) {
@@ -155,7 +158,7 @@ function initMap() {
     }
 
     input.value = "";
-  });
+  });*/
 }
 
 window.initMap = initMap;
