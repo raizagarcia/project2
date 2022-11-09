@@ -3,6 +3,8 @@ const Restaurant = require("../models/Restaurant.model");
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const Review = require("../models/Review.model");
+const isLoggedIn = require("../middleware/isLoggedIn");
+const isLoggedOut = require("../middleware/isLoggedOut");
 
 ///////////////////
 /// RESTAURANTS ///
@@ -48,7 +50,7 @@ router.get("/restaurant-create", (req, res, next) =>
 // Receber a informação do form - POST (restaurant-create.hbs)
 router.post("/restaurant-create", async (req, res, next) => {
   try {
-    let { name, imgRestaurant, placeId } = req.body;
+    let { name, imgUrl, placeId } = req.body;
 
     // Obrigar users a preencher os requisitos abaixo - Exemplo
     if (!name) {
@@ -57,8 +59,13 @@ router.post("/restaurant-create", async (req, res, next) => {
 
     const createdRestaurant = await Restaurant.create({
       name,
-      imgRestaurant,
+      imgRestaurant: imgUrl,
       placeId,
+    });
+
+    const userId = req.session.currentUser._id;
+    const userRest = await User.findByIdAndUpdate(userId, {
+      $push: { restaurants: createdRestaurant._id },
     });
 
     // Redirecciona para a review
@@ -116,14 +123,32 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
 ///////////////
 
 // Get all reviews (my-restaurants.hbs)
-router.get("/my-restaurants", async (req, res, next) => {
+router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
   try {
-    const restaurants = await Restaurant.find().populate("reviews");
-    const reviews = restaurants.filter((restaurant) => {
-      restaurant.author === req.session.currentUser._id;
+    /*     const restaurants = await Restaurant.find().populate("reviews");
+    const userReviews = restaurants.filter((restaurant) => {
+      restaurant.author == req.session.currentUser._id;
     });
-    console.log(reviews);
-    res.render("restaurant/my-restaurants", { restaurants });
+    console.log(userReviews); */
+    const userId = req.session.currentUser._id;
+    const userRest = await User.findById(userId)
+      .populate("restaurants")
+      .populate({
+        path: "restaurants",
+        populate: {
+          path: "reviews",
+          model: "Review",
+        },
+      })
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      });
+
+    res.render("restaurant/my-restaurants", { userRest });
   } catch (error) {
     console.log(error);
     next(error);
@@ -195,7 +220,7 @@ router.post("/review-create/:id", async (req, res, next) => {
     });
 
     // Em vez de fazer render, redirecciona para o restaurante acabado de criar
-    res.redirect(`/restaurant-details/${restaurantId}`);
+    res.redirect(`/review-details/${restaurantId}`);
   } catch (error) {
     console.log(error);
     next(error);

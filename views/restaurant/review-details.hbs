@@ -4,7 +4,7 @@
 
 <br />
 <br />
-<input type="text" name="name" id="autocomplete" value="" />
+<input type="text" name="name" id="autocomplete" value="{{restaurant.name}}" />
 
 <br />
 <br />
@@ -17,16 +17,12 @@
 
 <br />
 <br />
-<div id="map"></div>
+<div id="map" style="height: 250px"></div>
 
 <br />
 <br />
 
-{{#each reviews.restaurant}}
-  <p>Name: {{restaurant.name}}</p>
-{{/each}}
-
-<p>description: {{review.description}}</p>
+<p>description: {{restaurant.description}}</p>
 
 <div class="rating">
   <input type="radio" id="star5" name="rating" value="5" />
@@ -41,21 +37,43 @@
   <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
 </div>
 
-<a href="/review-edit/{{review._id}}">Edit Review</a>
+<a href="/restaurant-edit/{{restaurant._id}}">Edit restaurant</a>
 
 <br />
 <br />
 
-<form action="/review-delete/{{_id}}" method="post">
+<form action="/restaurant-delete/{{_id}}" method="post">
 
-  <button type="submit">Delete Review</button>
+  <button type="submit">Delete restaurant</button>
 
 </form>
 
-<script>
-  function result2() { document.getElementById("autocomplete").value = "{{restaurant.name}}";
-  } function result1() { document.getElementById("autocomplete").value = "bla";
-  setInterval(result2, 1000); } document.addEventListener('DOMContentLoaded',
-  function() { document.getElementById("autocomplete").value = "{{restaurant.name}}";
-  setInterval(result1, 1000); });
-</script>
+<hr />
+
+<h4>Leave a comment</h4>
+
+<form action="/comment/create/{{restaurant._id}}" method="post">
+
+  <input type="text" name="placeId" id="placeId" hidden />
+
+  <select name="author">
+    {{#each users}}
+      <option value="{{_id}}">{{username}}</option>
+    {{/each}}
+  </select>
+
+  <label for="content"></label>
+  <textarea name="content" id="content" cols="30" rows="10"></textarea>
+  <button type="submit">Comment</button>
+</form>
+
+<hr />
+
+{{#each restaurant.comments}}
+  <div>
+    <p><span>By {{author.username}}: </span>{{content}}</p>
+    <form action="/comment/delete/{{_id}}" method="post">
+      <button type="submit">X</button>
+    </form>
+  </div>
+{{/each}}

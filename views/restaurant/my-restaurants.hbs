@@ -9,11 +9,12 @@
 
 {{/each}} --}}
 
-{{#each restaurants}}
+{{#each userRest.restaurants}}
 
   <div>
     <h3>{{name}}</h3>
-    <h3>{{reviews}}
+    <a href="/restaurant-details/{{_id}}">See details</a>
+
     {{#each reviews}}
         <p>{{description}}</h3>
     {{/each}}

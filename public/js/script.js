@@ -112,6 +112,7 @@ function initMap() {
       //document.getElementById("country").value = place.formatted_address.types[0];
       document.getElementById("imgRestaurant").style.display = "block";
       document.getElementById("imgRestaurant").src = place.photos[0].getUrl();
+      document.getElementById("imgUrl").value = place.photos[0].getUrl();
     } else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
