@@ -1,8 +1,16 @@
-<form action="/restaurant-edit/{{_id}}" method="post">
+<form action="/profile-edit/{{_id}}" method="post">
 
   <label for="name"><b>Name</b></label>
   <br />
-  <input type="text" name="name" id="name" value="{{name}}" required />
+  <input type="text" name="name" id="name" value="{{username}}" required />
+
+
+  <div class='form-group'>
+      <label for='image'>
+        Profile photo:
+        <input type='file' name='image' class='form-control-file' />
+      </label>
+    </div>
 </form>
 
 

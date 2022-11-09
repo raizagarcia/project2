@@ -145,23 +145,58 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 router.get('/profile', isLoggedIn, (req, res) => {
   const user = req.session.user;
   console.log(user);
-
   res.render('auth/profile', user);
+});
+
+
+// Display a página de Edit routes (profile-edit.hbs)
+router.get("/profile-edit/:id", async (req, res, next) => {
+  try {
+    const updateUser= await User.findById(req.params.id);
+    res.render("user/profile-edit", updateUser);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+// Receber a informação do EDIT form- POST (profile-edit.hbs)
+router.post('/profile-edit/:id', isLoggedIn, fileUploader.single('imageUrl'), async (req, res, next) => {
+  try {
+  const {id} = req.params;
+  const { username, imageUrl } = req.body;
+  const updatedProfile = await User.findByIdAndUpdate(id, {
+    username,
+    imageUrl,
+  });
+    
+  if(req.file) {
+    User.findByIdAndUpdate( id, {username, imageUrl: req.file.path}, {new: true})
+    res.redirect(`/auth/profile/${updatedProfile._id}`)};
+   
+   if(!req.file) {
+    User.findByIdAndUpdate( id, {username, imageUrl: req.file.path}, {new: true})
+    res.redirect(`/auth/profile/${updatedProfile._id}`)}; 
+
+} catch (error) {
+  console.log(error);
+  next(error);
+}
 });
 
 // GET /auth/logout
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
-      return;
-    } 
-    
+      return res
+        .status(500)
+        .render('auth/logout', { errorMessage: err.message });
+    }
+    res.redirect("/");
   });
 });
 
 // This route has the image upload example 
-/* router.post('/profile', fileUploader.single('profile-photo'), (req, res) => {
+/* router.post('/profile', fileUploader.single('imageUrl'), (req, res) => {
   const { title, description } = req.body;
  
   Movie.create({ title, description, imageUrl: req.file.path })
@@ -177,6 +212,20 @@ router.get("/logout", isLoggedIn, (req, res) => {
     if (err) next(err);
     else res.redirect("/");
   }); 
-}); */ 
+}); 
+*/
+
+
+/* if(req.file) {
+    User.findByIdAndUpdate( projectid, {description, title, link, imageUrl: req.file.path}, {new: true})
+    .then(() => res.redirect(`/profile/${username}`))
+    .catch(err => next(err))
+  } 
+  if(!req.file) {
+    Project.findByIdAndUpdate( projectid, {description, title, link}, {new: true})
+    .then(() => res.redirect(`/profile/${username}`))
+    .catch(err => next(err))
+  } */
+
 
 module.exports = router;

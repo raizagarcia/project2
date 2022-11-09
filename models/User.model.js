@@ -22,13 +22,12 @@ const userSchema = new Schema(
     },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
-    imageUrl: String,
+    imageUrl: {
+      type: String,
+      default: 'https://sm.ign.com/ign_pt/cover/n/nicolas-ca/nicolas-cage_y81t.jpg',
   },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
-    timestamps: true,
-  }
-);
+  
+});
 
 const User = model("User", userSchema);
 
