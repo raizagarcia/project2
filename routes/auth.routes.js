@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const fileUploader = require('../config/cloudinary.config');
+const fileUploader = require("../config/cloudinary.config");
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -142,17 +142,16 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.get('/profile', isLoggedIn, (req, res) => {
-  const user = req.session.user;
+router.get("/profile", isLoggedIn, (req, res) => {
+  const user = req.session.currentUser;
   console.log(user);
-  res.render('auth/profile', user);
+  res.render("auth/profile", user);
 });
-
 
 // Display a página de Edit routes (profile-edit.hbs)
 router.get("/profile-edit/:id", async (req, res, next) => {
   try {
-    const updateUser= await User.findById(req.params.id);
+    const updateUser = await User.findById(req.params.id);
     res.render("user/profile-edit", updateUser);
   } catch (error) {
     console.log(error);
@@ -160,28 +159,38 @@ router.get("/profile-edit/:id", async (req, res, next) => {
   }
 });
 // Receber a informação do EDIT form- POST (profile-edit.hbs)
-router.post('/profile-edit/:id', isLoggedIn, fileUploader.single('imageUrl'), async (req, res, next) => {
-  try {
-  const {id} = req.params;
-  const { username, imageUrl } = req.body;
-  const updatedProfile = await User.findByIdAndUpdate(id, {
-    username,
-    imageUrl,
-  });
-    
-  if(req.file) {
-    User.findByIdAndUpdate( id, {username, imageUrl: req.file.path}, {new: true})
-    res.redirect(`/auth/profile/${updatedProfile._id}`)};
-   
-   if(!req.file) {
-    User.findByIdAndUpdate( id, {username, imageUrl: req.file.path}, {new: true})
-    res.redirect(`/auth/profile/${updatedProfile._id}`)}; 
+router.post(
+  "/profile-edit/:id",
+  isLoggedIn,
+  fileUploader.single("image"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { username, currentImg } = req.body;
 
-} catch (error) {
-  console.log(error);
-  next(error);
-}
-});
+      let imageUrl;
+      if (req.file) {
+        imageUrl = req.file.path;
+      } else {
+        imageUrl = currentImg;
+      }
+      console.log(imageUrl);
+
+      let updatedUser = await User.findByIdAndUpdate(
+        id,
+        { username, imageUrl },
+        { new: true }
+      );
+
+      req.session.currentUser = updatedUser;
+      console.log(updatedUser);
+      res.redirect(`/auth/profile`);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+);
 
 // GET /auth/logout
 router.get("/logout", isLoggedIn, (req, res) => {
@@ -189,13 +198,13 @@ router.get("/logout", isLoggedIn, (req, res) => {
     if (err) {
       return res
         .status(500)
-        .render('auth/logout', { errorMessage: err.message });
+        .render("auth/logout", { errorMessage: err.message });
     }
     res.redirect("/");
   });
 });
 
-// This route has the image upload example 
+// This route has the image upload example
 /* router.post('/profile', fileUploader.single('imageUrl'), (req, res) => {
   const { title, description } = req.body;
  
@@ -215,7 +224,6 @@ router.get("/logout", isLoggedIn, (req, res) => {
 }); 
 */
 
-
 /* if(req.file) {
     User.findByIdAndUpdate( projectid, {description, title, link, imageUrl: req.file.path}, {new: true})
     .then(() => res.redirect(`/profile/${username}`))
@@ -226,6 +234,5 @@ router.get("/logout", isLoggedIn, (req, res) => {
     .then(() => res.redirect(`/profile/${username}`))
     .catch(err => next(err))
   } */
-
 
 module.exports = router;

@@ -4,10 +4,7 @@
 
 <br />
 <br />
-<input type="text" name="name" id="autocomplete" value="{{restaurant.name}}" />
 
-<br />
-<br />
 <img
   src="{{restaurant.imgRestaurant}}"
   width="300"
@@ -19,15 +16,8 @@
 <br />
 <div id="map" style="height: 250px"></div>
 
-<a href="/restaurant-edit/{{restaurant._id}}">Edit restaurant</a>
-
-<br />
-<br />
-
-<form action="/restaurant-delete/{{_id}}" method="post">
-
-  <button type="submit">Delete restaurant</button>
-
+<form action="/restaurant-create" method="post" class="flex-form">
+    <input type="submit" value="Next" />
 </form>
 
 <hr />
@@ -37,13 +27,6 @@
 <form action="/comment/create/{{restaurant._id}}" method="post">
 
   <input type="text" name="placeId" id="placeId" hidden />
-
-  <select name="author">
-    {{#each users}}
-      <option value="{{_id}}">{{username}}</option>
-    {{/each}}
-  </select>
-
   <label for="content"></label>
   <textarea name="content" id="content" cols="30" rows="10"></textarea>
   <button type="submit">Comment</button>
@@ -54,7 +37,7 @@
 {{#each restaurant.comments}}
   <div>
     <p><span>By {{author.username}}: </span>{{content}}</p>
-    <form action="/comment/delete/{{_id}}" method="post">
+    <form action="/comment/delete/{{_id}}/{{../restaurant._id}}" method="post">
       <button type="submit">X</button>
     </form>
   </div>

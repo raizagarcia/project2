@@ -44,11 +44,11 @@ router.get("/restaurant-details/:id", async (req, res, next) => {
 });
 
 // Display a página de form - GET (restaurant-create.hbs)
-router.get("/restaurant-create", (req, res, next) =>
+router.get("/restaurant-create", isLoggedIn, (req, res, next) =>
   res.render("restaurant/restaurant-create")
 );
 // Receber a informação do form - POST (restaurant-create.hbs)
-router.post("/restaurant-create", async (req, res, next) => {
+router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
   try {
     let { name, imgUrl, placeId } = req.body;
 
@@ -147,7 +147,7 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
           model: "User",
         },
       });
-
+    console.log(userRest.restaurants[0].reviews);
     res.render("restaurant/my-restaurants", { userRest });
   } catch (error) {
     console.log(error);
@@ -156,24 +156,18 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
 });
 
 // Individual restaurant - details route (review-details.hbs)
-router.get("/review-details/:id", async (req, res, next) => {
+router.get("/review-details/:id", isLoggedIn, async (req, res, next) => {
   try {
     const id = req.params.id;
     //get all the users
-    const users = await User.find();
+    //const users = await User.find();
     //get all the restaurants
-    const restaurants = await Restaurant.find();
+    //const restaurants = await Restaurant.find();
     //get the specific review
-    const review = await Review.findById(id)
-      .populate("restaurant")
-      .populate({
-        path: "restaurant",
-        populate: {
-          path: "name",
-          model: "Restaurant",
-        },
-      });
-    res.render("restaurant/review-details", { review, users, restaurants });
+    const review = await Review.findById(id).populate("restaurant");
+    console.log(review);
+
+    res.render("restaurant/review-details", review);
   } catch (error) {
     console.log(error);
     next(error);
@@ -181,12 +175,12 @@ router.get("/review-details/:id", async (req, res, next) => {
 });
 
 // Display a página de form - GET (review-create.hbs)
-router.get("/review-create/:id", (req, res, next) => {
+router.get("/review-create/:id", isLoggedIn, (req, res, next) => {
   const restId = req.params.id;
   res.render("restaurant/review-create", { restId });
 });
 // Receber a informação do form - POST (review-create.hbs)
-router.post("/review-create/:id", async (req, res, next) => {
+router.post("/review-create/:id", isLoggedIn, async (req, res, next) => {
   try {
     const userId = req.session.currentUser._id;
     const restaurantId = req.params.id;
@@ -220,7 +214,7 @@ router.post("/review-create/:id", async (req, res, next) => {
     });
 
     // Em vez de fazer render, redirecciona para o restaurante acabado de criar
-    res.redirect(`/review-details/${restaurantId}`);
+    res.redirect(`/my-restaurants`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -258,9 +252,25 @@ router.post("/review-edit/:id", async (req, res, next) => {
 router.post("/review-delete/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
+    const review = await Review.findById(id);
+
+    //take the review from the restaurant
+    await Restaurant.findByIdAndUpdate(review.restaurant, {
+      $pull: { reviews: review._id },
+    });
+    //take the review from the user
+    await User.findByIdAndUpdate(review.author, {
+      $pull: { reviews: review._id },
+    });
+    //take the restuarant from the user
+    await User.findByIdAndUpdate(review.author, {
+      $pull: { restaurants: review.restaurant },
+    });
+
+    //lastly, delete the review
     await Review.findByIdAndRemove(id);
     // Em vez de fazer render, redirecciona para os restaurantes do user
-    res.redirect(`/my-restaurants/`);
+    res.redirect(`/my-restaurants`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -273,7 +283,8 @@ router.post("/review-delete/:id", async (req, res, next) => {
 //Comments (Individual Restaurant)
 router.post("/comment/create/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { content, author } = req.body;
+  const { content } = req.body;
+  const author = req.session.currentUser._id;
   try {
     //Create the review
     const newComment = await Comment.create({ content, author });
@@ -300,14 +311,14 @@ router.post("/comment/create/:id", async (req, res, next) => {
   }
 });
 
-router.post("/comment/delete/:id", async (req, res, next) => {
-  const { id } = req.params;
+router.post("/comment/delete/:id/:restaurantId", async (req, res, next) => {
+  const { id, restaurantId } = req.params;
   try {
     const removedComment = await Comment.findByIdAndRemove(id);
     await User.findByIdAndUpdate(removedComment.author, {
       $pull: { comments: removedComment._id },
     });
-    res.redirect(`/restaurant-details/${id}`);
+    res.redirect(`/restaurant-details/${restaurantId}`);
   } catch (error) {
     console.log(error);
     next(error);
