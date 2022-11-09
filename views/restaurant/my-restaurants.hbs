@@ -1,10 +1,22 @@
 <h1>My Restaurants</h1>
 
+{{#each reviews}}
+
+  <div>
+    <h3>{{description}}</h3>
+    <a href="/review-details/{{_id}}">See details</a>
+  </div>
+
+{{/each}}
+
 {{#each restaurants}}
 
   <div>
     <h3>{{name}}</h3>
-    <a href="/restaurant-details/{{_id}}">See details</a>
+    <h3>{{reviews}}
+    {{#each reviews}}
+        <p>{{description}}</h3>
+    {{/each}}
   </div>
 
 {{/each}}
