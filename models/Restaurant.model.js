@@ -5,13 +5,10 @@ const restaurantSchema = new Schema({
     type: String,
     required: true,
   },
+  imgRestaurant: String,
   placeId: String,
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
-  /*author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },*/
 });
 
 const Restaurant = model("Restaurant", restaurantSchema);

@@ -22,7 +22,11 @@
 <br />
 <br />
 
-<p>description: {{restaurant.description}}</p>
+{{#each reviews.restaurant}}
+  <p>Name: {{restaurant.name}}</p>
+{{/each}}
+
+<p>description: {{review.description}}</p>
 
 <div class="rating">
   <input type="radio" id="star5" name="rating" value="5" />
@@ -37,46 +41,16 @@
   <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
 </div>
 
-<a href="/restaurant-edit/{{restaurant._id}}">Edit restaurant</a>
+<a href="/review-edit/{{review._id}}">Edit Review</a>
 
 <br />
 <br />
 
-<form action="/restaurant-delete/{{_id}}" method="post">
+<form action="/review-delete/{{_id}}" method="post">
 
-  <button type="submit">Delete restaurant</button>
+  <button type="submit">Delete Review</button>
 
 </form>
-
-<hr />
-
-<h4>Leave a comment</h4>
-
-<form action="/comment/create/{{restaurant._id}}" method="post">
-
-  <input type="text" name="placeId" id="placeId" hidden />
-
-  <select name="author">
-    {{#each users}}
-      <option value="{{_id}}">{{username}}</option>
-    {{/each}}
-  </select>
-
-  <label for="content"></label>
-  <textarea name="content" id="content" cols="30" rows="10"></textarea>
-  <button type="submit">Comment</button>
-</form>
-
-<hr />
-
-{{#each restaurant.comments}}
-  <div>
-    <p><span>By {{author.username}}: </span>{{content}}</p>
-    <form action="/comment/delete/{{_id}}" method="post">
-      <button type="submit">X</button>
-    </form>
-  </div>
-{{/each}}
 
 <script>
   function result2() { document.getElementById("autocomplete").value = "{{restaurant.name}}";

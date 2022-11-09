@@ -109,13 +109,9 @@ function initMap() {
       console.log(place.formatted_address);
       document.getElementById("autocomplete").value = place.name;
       document.getElementById("placeId").value = place.place_id;
-      document.getElementById("country").value =
-        place.formatted_address.types[0];
+      //document.getElementById("country").value = place.formatted_address.types[0];
       document.getElementById("imgRestaurant").style.display = "block";
-      document.getElementById("imgRestaurant").src = place.photos[0].getUrl({
-        maxWidth: 500,
-        maxHeight: 500,
-      });
+      document.getElementById("imgRestaurant").src = place.photos[0].getUrl();
     } else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
@@ -123,8 +119,9 @@ function initMap() {
 
     marker.setPosition(place.geometry.location);
     marker.setVisible(true);
-    //infowindowContent.children["place-name"].textContent = place.name;
-    //infowindowContent.children["place-address"].textContent = place.formatted_address;
+    infowindowContent.children["place-name"].textContent = place.name;
+    infowindowContent.children["place-address"].textContent =
+      place.formatted_address;
     infowindow.open(map, marker);
   });
   /*

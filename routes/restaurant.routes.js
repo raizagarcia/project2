@@ -4,6 +4,9 @@ const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const Review = require("../models/Review.model");
 
+///////////////////
+/// RESTAURANTS ///
+///////////////////
 // Get all restaurants (restaurant-list.hbs)
 router.get("/restaurant-list", async (req, res, next) => {
   try {
@@ -19,7 +22,7 @@ router.get("/restaurant-list", async (req, res, next) => {
 router.get("/restaurant-details/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    //get all the users
+    //get all the users  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     const users = await User.find();
     //get the specific restaurant
     const restaurant = await Restaurant.findById(id)
@@ -45,7 +48,7 @@ router.get("/restaurant-create", (req, res, next) =>
 // Receber a informação do form - POST (restaurant-create.hbs)
 router.post("/restaurant-create", async (req, res, next) => {
   try {
-    let { name, placeId } = req.body;
+    let { name, imgRestaurant, placeId } = req.body;
 
     // Obrigar users a preencher os requisitos abaixo - Exemplo
     if (!name) {
@@ -54,6 +57,7 @@ router.post("/restaurant-create", async (req, res, next) => {
 
     const createdRestaurant = await Restaurant.create({
       name,
+      imgRestaurant,
       placeId,
     });
 
@@ -65,56 +69,7 @@ router.post("/restaurant-create", async (req, res, next) => {
   }
 });
 
-// Display a página de form - GET (review-create.hbs)
-router.get("/review-create/:id", (req, res, next) => {
-  const restId = req.params.id;
-  res.render("restaurant/review-create", { restId });
-});
-// Receber a informação do form - POST (review-create.hbs)
-router.post("/review-create/:id", async (req, res, next) => {
-  try {
-    const restaurantId = req.params.id;
-    let { description, rating } = req.body;
-    rating = Number(rating);
-
-    console.log(restaurantId);
-
-    // Obrigar users a preencher os requisitos abaixo - Exemplo
-    if (!rating) {
-      res.redirect("/error");
-    }
-
-    const createdReview = await Review.create({
-      description,
-      rating,
-    });
-
-    const restaurantUpdate = await Restaurant.findByIdAndUpdate(restaurantId, {
-      $push: {
-        reviews: createdReview._id,
-      },
-    });
-
-    const userUpdate = await User.findByIdAndUpdate(req.session.user._id, {
-      $push: {
-        reviews: createdReview._id,
-      },
-    });
-
-    const reviewUpdate = await Review.findByIdAndUpdate(createdReview._id, {
-      $push: {
-        restaurant: restaurantId,
-      },
-    });
-
-    // Em vez de fazer render, redirecciona para o restaurante acabado de criar
-    res.redirect(`/restaurant-details/${restaurantId}`);
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
-
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Display a página de Edit routes (restaurant-edit.hbs)
 router.get("/restaurant-edit/:id", async (req, res, next) => {
   try {
@@ -129,11 +84,11 @@ router.get("/restaurant-edit/:id", async (req, res, next) => {
 router.post("/restaurant-edit/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, description, rating } = req.body;
+    const { name, imgRestaurant, placeId } = req.body;
     const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, {
       name,
-      description,
-      rating,
+      imgRestaurant,
+      placeId,
     });
     // Em vez de fazer render, redirecciona para o restaurante acabado de editar
     res.redirect(`/restaurant-details/${updatedRestaurant._id}`);
@@ -156,7 +111,144 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
   }
 });
 
-//Reviews (Individual Restaurant)
+///////////////
+/// REVIEWS ///
+///////////////
+
+// Get all reviews (my-restaurants.hbs)
+router.get("/my-restaurants", async (req, res, next) => {
+  try {
+    const reviews = await Review.find();
+    const restaurants = await Restaurant.find();
+    console.log(reviews);
+    console.log(restaurants);
+    res.render("restaurant/my-restaurants", { reviews, restaurants });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Individual restaurant - details route (review-details.hbs)
+router.get("/review-details/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    //get all the users
+    const users = await User.find();
+    //get all the restaurants
+    const restaurants = await Restaurant.find();
+    //get the specific review
+    const review = await Review.findById(id)
+      .populate("restaurant")
+      .populate({
+        path: "restaurant",
+        populate: {
+          path: "name",
+          model: "Restaurant",
+        },
+      });
+    res.render("restaurant/review-details", { review, users, restaurants });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Display a página de form - GET (review-create.hbs)
+router.get("/review-create/:id", (req, res, next) => {
+  const restId = req.params.id;
+  res.render("restaurant/review-create", { restId });
+});
+// Receber a informação do form - POST (review-create.hbs)
+router.post("/review-create/:id", async (req, res, next) => {
+  try {
+    const userId = req.session.currentUser._id;
+    const restaurantId = req.params.id;
+    let { description, rating } = req.body;
+    rating = Number(rating);
+
+    console.log(restaurantId);
+
+    // Obrigar users a preencher os requisitos abaixo - Exemplo
+    if (!rating) {
+      res.redirect("/error");
+    }
+
+    const createdReview = await Review.create({
+      description,
+      rating,
+    });
+
+    const restaurantUpdate = await Restaurant.findByIdAndUpdate(restaurantId, {
+      $push: {
+        reviews: createdReview._id,
+      },
+    });
+
+    const userUpdate = await User.findByIdAndUpdate(userId, {
+      $push: {
+        reviews: createdReview._id,
+      },
+    });
+
+    const reviewUpdate = await Review.findByIdAndUpdate(createdReview._id, {
+      $push: {
+        restaurant: restaurantId,
+      },
+    });
+
+    // Em vez de fazer render, redirecciona para o restaurante acabado de criar
+    res.redirect(`/restaurant-details/${restaurantId}`);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Display a página de Edit routes (review-edit.hbs)
+router.get("/review-edit/:id", async (req, res, next) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    res.render("restaurant/review-edit", review);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+// Receber a informação do EDIT form- POST (review-edit.hbs)
+router.post("/review-edit/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { description, rating } = req.body;
+    const updatedReview = await Review.findByIdAndUpdate(id, {
+      description,
+      rating,
+    });
+    // Em vez de fazer render, redirecciona para o restaurante acabado de editar
+    res.redirect(`/review-details/${updatedReview._id}`);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Delete review (no need for hbs file)
+router.post("/review-delete/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await Review.findByIdAndRemove(id);
+    // Em vez de fazer render, redirecciona para os restaurantes do user
+    res.redirect(`/my-restaurants/`);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+////////////////
+/// COMMENTS ///
+////////////////
+//Comments (Individual Restaurant)
 router.post("/comment/create/:id", async (req, res, next) => {
   const { id } = req.params;
   const { content, author } = req.body;

@@ -1,25 +1,25 @@
-<h1>Create a restaurant</h1>
+<div class="rest-container">
 
-<form action="/restaurant-create" method="post">
+  <div class="cover">
+    <h1>Find your restaurant.</h1>
+    <form action="/restaurant-create" method="post" class="flex-form">
+      <label for="from">
+        <i class="ion-location"></i>
+      </label>
+      <input type="search" name="name" id="autocomplete" />
+      <input type="submit" value="Search" />
+      <input type="text" name="placeId" id="placeId" hidden />
 
-  <label for="name"><b>Name</b></label>
-  <br />
-  <input type="text" name="name" id="autocomplete" style="width: 500px;" />
-  <input type="text" name="placeId" id="placeId" hidden />
-  <input type="text" name="country" id="country" />
+      <img
+        src=""
+        width="300"
+        height="300"
+        name="imgRestaurant"
+        id="imgRestaurant"
+        style="display: none"
+      />
+      <div id="map"></div>
+    </form>
+  </div>
 
-  <br />
-  <br />
-
-  <img
-    src=""
-    width="300"
-    height="300"
-    id="imgRestaurant"
-    style="display: none"
-  />
-  <div id="map"></div>
-
-  <button type="submit">Add restaurant</button>
-
-</form>
+</div>
