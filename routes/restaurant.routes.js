@@ -118,11 +118,12 @@ router.post("/restaurant-delete/:id", async (req, res, next) => {
 // Get all reviews (my-restaurants.hbs)
 router.get("/my-restaurants", async (req, res, next) => {
   try {
-    const reviews = await Review.find();
-    const restaurants = await Restaurant.find();
+    const restaurants = await Restaurant.find().populate("reviews");
+    const reviews = restaurants.filter((restaurant) => {
+      restaurant.author === req.session.currentUser._id;
+    });
     console.log(reviews);
-    console.log(restaurants);
-    res.render("restaurant/my-restaurants", { reviews, restaurants });
+    res.render("restaurant/my-restaurants", { restaurants });
   } catch (error) {
     console.log(error);
     next(error);
@@ -177,6 +178,8 @@ router.post("/review-create/:id", async (req, res, next) => {
     const createdReview = await Review.create({
       description,
       rating,
+      author: userId,
+      restaurant: restaurantId,
     });
 
     const restaurantUpdate = await Restaurant.findByIdAndUpdate(restaurantId, {
@@ -188,12 +191,6 @@ router.post("/review-create/:id", async (req, res, next) => {
     const userUpdate = await User.findByIdAndUpdate(userId, {
       $push: {
         reviews: createdReview._id,
-      },
-    });
-
-    const reviewUpdate = await Review.findByIdAndUpdate(createdReview._id, {
-      $push: {
-        restaurant: restaurantId,
       },
     });
 

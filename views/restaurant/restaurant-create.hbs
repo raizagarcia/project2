@@ -1,25 +1,27 @@
-<div class="rest-container">
+<h1>Find rest</h1>
+<form action="/restaurant-create" method="post" class="flex-form">
+  <div class="user-box">
+    <input type="search" name="name" id="autocomplete" />
+    <input type="submit" value="Next" />
+    <input type="text" name="placeId" id="placeId" hidden />
+  </div>
+</form>
 
-  <div class="cover">
-    <h1>Find your restaurant.</h1>
-    <form action="/restaurant-create" method="post" class="flex-form">
-      <label for="from">
-        <i class="ion-location"></i>
-      </label>
-      <input type="search" name="name" id="autocomplete" />
-      <input type="submit" value="Search" />
-      <input type="text" name="placeId" id="placeId" hidden />
+<div class="rest-create">
 
+  <div class="row">
+    <div class="column">
       <img
-        src=""
-        width="300"
-        height="300"
+        src="https://www.w3schools.com/howto/photographer.jpg"
+        width="100%"
+        height="auto"
         name="imgRestaurant"
         id="imgRestaurant"
-        style="display: none"
       />
+    </div>
+    <div class="column">
       <div id="map"></div>
-    </form>
+    </div>
   </div>
 
 </div>
