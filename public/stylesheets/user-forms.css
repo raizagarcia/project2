@@ -87,9 +87,9 @@
   transition: all 0.2s ease-in-out;
 }
 
-/* #user-forms #currentImg {
+#user-forms #currentImg {
   display: none;
-} */
+}
 
 #user-forms input {
   padding: 10px;
@@ -123,6 +123,10 @@
   text-align: center;
   padding: 10px 0;
   background: rgba(107, 255, 3, 0.3);
+}
+
+#user-forms a.user-logout-style {
+  background: rgba(218, 70, 70, 0.3);
 }
 
 #user-forms a:hover {
