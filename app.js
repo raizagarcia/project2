@@ -17,6 +17,18 @@ let helpers = require("handlebars-helpers")({
   handlebars: hbs,
 });
 
+hbs.registerHelper("times", function (n, block) {
+  var accum = "";
+  for (var i = 0; i < n; ++i) accum += block.fn(i);
+  return accum;
+});
+
+hbs.registerHelper("emptyStars", function (n, block) {
+  var accum = "";
+  for (var i = 0; i < 5 - n; ++i) accum += block.fn(i);
+  return accum;
+});
+
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware

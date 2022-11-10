@@ -57,19 +57,29 @@ router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
       res.redirect("/error");
     }
 
-    const createdRestaurant = await Restaurant.create({
-      name,
-      imgRestaurant: imgUrl,
-      placeId,
-    });
+    //Check if placeid exists
+
+    let restaurantToAdd;
+
+    const restaurantExists = await Restaurant.findOne({ placeId });
+
+    if (restaurantExists) {
+      restaurantToAdd = restaurantExists;
+    } else {
+      restaurantToAdd = await Restaurant.create({
+        name,
+        imgRestaurant: imgUrl,
+        placeId,
+      });
+    }
 
     const userId = req.session.currentUser._id;
     const userRest = await User.findByIdAndUpdate(userId, {
-      $push: { restaurants: createdRestaurant._id },
+      $push: { restaurants: restaurantToAdd._id },
     });
     //--------------------------------
     // Redirecciona para a review
-    res.redirect(`/review-create/${createdRestaurant._id}`);
+    res.redirect(`/review-create/${restaurantToAdd._id}`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -130,26 +140,37 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       restaurant.author == req.session.currentUser._id;
     });
     console.log(userReviews); */
-    
+
     const userId = req.session.currentUser._id;
     const userRest = await User.findById(userId)
-    .populate("restaurants")
-    .populate({
-      path: "restaurants",
-      populate: {
+      .populate("restaurants")
+      .populate({
+        path: "restaurants",
+        populate: {
+          path: "reviews",
+          model: "Review",
+        },
+      })
+      .populate({
         path: "reviews",
-        model: "Review",
-      },
-    })
-    .populate({
-      path: "reviews",
-      populate: {
-        path: "author",
-        model: "User",
-      },
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      });
+
+    let test = userRest.restaurants.map((restaurant) => {
+      if (restaurant.reviews.length > 1) {
+        let userReview = restaurant.reviews.filter(
+          (review) => review.author._id == userId
+        );
+        restaurant.reviews = userReview;
+        return restaurant;
+      } else {
+        return restaurant;
+      }
     });
-    console.log(userRest.restaurants[0].reviews);
-    
+
     res.render("restaurant/my-restaurants", { userRest });
   } catch (error) {
     console.log(error);
@@ -224,9 +245,15 @@ router.post("/review-create/:id", isLoggedIn, async (req, res, next) => {
       },
     });
 
-    const userUpdate = await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userId, {
       $push: {
         reviews: createdReview._id,
+      },
+    });
+
+    await User.findByIdAndUpdate(userId, {
+      $push: {
+        restaurants: createdReview.restaurant,
       },
     });
 
@@ -328,18 +355,22 @@ router.post("/comment/create/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/comment/delete/:id/:restaurantId", isLoggedIn, async (req, res, next) => {
-  const { id, restaurantId } = req.params;
-  try {
-    const removedComment = await Comment.findByIdAndRemove(id);
-    await User.findByIdAndUpdate(removedComment.author, {
-      $pull: { comments: removedComment._id },
-    });
-    res.redirect(`/restaurant-details/${restaurantId}`);
-  } catch (error) {
-    console.log(error);
-    next(error);
+router.post(
+  "/comment/delete/:id/:restaurantId",
+  isLoggedIn,
+  async (req, res, next) => {
+    const { id, restaurantId } = req.params;
+    try {
+      const removedComment = await Comment.findByIdAndRemove(id);
+      await User.findByIdAndUpdate(removedComment.author, {
+        $pull: { comments: removedComment._id },
+      });
+      res.redirect(`/restaurant-details/${restaurantId}`);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;
