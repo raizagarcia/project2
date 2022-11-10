@@ -1,18 +1,46 @@
-<h1>Restaurant List</h1>
-
-{{#each restaurants}}
-
-  <div>
-    <h3>{{name}}</h3>
-    <br />
-    <br />
-    <img src="{{imgRestaurant}}" width="300" height="300" id="imgRestaurant" />
-    <br />
-    <br />
-    <a href="#">Check map</a>
-    <br />
-    <br />
-    <a href="/restaurant-details/{{_id}}">See details</a>
+<div class="hero-image hero-my-restaurants">
+  <div class="hero-text">
+    <h1>All Restaurants</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
   </div>
+</div>
 
-{{/each}}
+<div class="custom-shape-divider-bottom-1668019210">
+  <svg
+    data-name="Layer 1"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1200 120"
+    preserveAspectRatio="none"
+  >
+    <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+  </svg>
+</div>
+
+<ul class="cards">
+  {{#each restaurants}}
+    <li>
+      <div class="card">
+        <a href="/restaurant-details/{{_id}}"><img
+            src="{{imgRestaurant}}"
+            class="card__image"
+            alt=""
+          /></a>
+        <div class="card__overlay">
+          <div class="card__header">
+            <svg class="card__arc"><path></path></svg>
+            <img
+              class="card__thumb"
+              src="/images/restaurante-list_icon.png"
+              alt=""
+            />
+            <div class="card__header-text">
+              <h3 class="card__title">{{name}}</h3>
+              <span class="card__status">Lorem Ipsum</span>
+            </div>
+          </div>
+          <a href="/restaurant-details/{{_id}}">sdasdsad</a>
+        </div>
+      </div>
+    </li>
+  {{/each}}
+</ul>

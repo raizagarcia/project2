@@ -1,24 +1,60 @@
-<h1>{{restaurant.name}}</h1>
+<div class="hero-image hero-my-restaurants">
+  <div class="hero-text">
+    <h1>{{restaurant.name}}</h1>
+  </div>
+</div>
 
-<hr />
+
+<div class="custom-shape-divider-bottom-1668019210">
+  <svg
+    data-name="Layer 1"
+    viewBox="0 0 1200 120"
+    preserveAspectRatio="none"
+  >
+    <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+  </svg>
+</div>
 
 <br />
 <br />
 
-<img
-  src="{{restaurant.imgRestaurant}}"
-  width="300"
-  height="300"
-  id="imgRestaurant"
-/>
+<div class="row-restaurants">
+  <div class="column column-left">
+    <div class="column-inner">
+      <img
+        src="{{restaurant.imgRestaurant}}"
+        width="100%"
+        height="auto"
+        id="imgRestaurant"
+        class="scale-center"
+      />
+    </div>
+  </div>
+  <div class="column column-right">
+    <div class="column-inner">
+    <img
+      class="card__thumb slide-bottom"
+      src="/images/restaurante-list_icon.png"
+      alt=""
+    />
+    <h1>{{restaurant.name}}</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+    </div>
+  </div>
+</div>
 
 <br />
 <br />
+
 <div id="map" style="height: 250px"></div>
 
 <form action="/restaurant-create" method="post" class="flex-form">
     <input type="submit" value="Next" />
 </form>
+
+<hr />
+
+<embed src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBTglNnXapmziUofnsiT1-pAufIijQdzZc&q=place_id:{{restaurant.placeId}}"></embed>
 
 <hr />
 
