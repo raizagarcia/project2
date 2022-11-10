@@ -187,6 +187,24 @@ a {
   color: #fece31;
 }
 
+.simple-rating-filled:before {
+  margin: 5px;
+  font-size: 2em;
+  font-family: FontAwesome;
+  content: "\f005";
+  display: inline-block;
+  color: #f79426;
+}
+
+.simple-rating-empty:before {
+  margin: 5px;
+  font-size: 2em;
+  font-family: FontAwesome;
+  content: "\f005";
+  display: inline-block;
+  color: #90a0a3;
+}
+
 /** HERO IMAGE */
 .hero-image {
   background-attachment: fixed;
