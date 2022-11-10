@@ -9,6 +9,18 @@ a {
   text-decoration: none;
 }
 
+#myLogo {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  padding: 25px;
+}
+
+#myLogo img {
+  max-width: 200px;
+}
+
 .overlay {
   height: 100%;
   width: 0;
@@ -233,7 +245,7 @@ a {
 }
 
 .hero-home .hero-text {
-  top: 25vh;
+  top: 20vh;
 }
 
 .hero-text {
@@ -306,7 +318,7 @@ svg {
 /* Home */
 .custom-shape-divider-bottom-1668019031 {
   position: absolute;
-  bottom: -25px;
+  bottom: -50px;
   left: 0;
   width: 100%;
   overflow: hidden;
@@ -823,4 +835,8 @@ input[type="search"] {
     flex-direction: column;
     padding: 8vw;
   }
-} ;
+
+  #myLogo img {
+    max-width: 100px;
+  }
+}
