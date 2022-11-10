@@ -150,10 +150,6 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
     });
     console.log(userRest.restaurants[0].reviews);
     
-  /*   if(!userRest){
-      res.redirect('/restaurant-create')
-    } */
-    
     res.render("restaurant/my-restaurants", { userRest });
   } catch (error) {
     console.log(error);
