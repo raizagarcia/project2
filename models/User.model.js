@@ -24,8 +24,7 @@ const userSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   imageUrl: {
     type: String,
-    default:
-      "https://sm.ign.com/ign_pt/cover/n/nicolas-ca/nicolas-cage_y81t.jpg",
+    default: "/images/user_default.png",
   },
 });
 

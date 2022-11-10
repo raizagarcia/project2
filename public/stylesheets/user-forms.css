@@ -11,10 +11,10 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(3, 3, 3, 0.8);
+  background: rgba(75, 75, 75, 0.8);
   overflow: hidden;
   opacity: 0.4;
-  box-shadow: 10px 10px 30px #000;
+  box-shadow: 10px 10px 30px #e8e6e6;
 }
 
 /* Login container */
@@ -28,8 +28,8 @@
   width: 260px;
   height: fit-content;
   border-radius: 5px;
-  background: rgba(3, 3, 3, 0.25);
-  box-shadow: 1px 1px 50px #000;
+  background: rgb(75 75 75 / 25%);
+  box-shadow: 1px 1px 50px #6f6f6f;
   display: none;
   padding: 3vw;
 }
@@ -45,7 +45,8 @@
   height: 20px;
   text-align: center;
   border-radius: 10px;
-  opacity: 0.2;
+  opacity: 0.8;
+  padding: 10px;
   -webkit-transition: all 2s ease-in-out;
   -moz-transition: all 2s ease-in-out;
   -o-transition: all 2s ease-in-out;
@@ -53,7 +54,7 @@
 }
 
 #user-forms .close-btn:hover {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 /* Heading */
@@ -118,7 +119,8 @@
 }
 
 /* Link */
-#user-forms a {
+#user-forms a,
+.home-btn {
   font-family: "Open Sans Condensed", sans-serif;
   text-align: center;
   padding: 10px 0;
@@ -129,7 +131,8 @@
   background: rgba(218, 70, 70, 0.3);
 }
 
-#user-forms a:hover {
+#user-forms a:hover,
+.home-btn:hover {
   opacity: 0.7;
 }
 
