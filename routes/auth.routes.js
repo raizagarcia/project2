@@ -204,35 +204,5 @@ router.get("/logout", isLoggedIn, (req, res) => {
   });
 });
 
-// This route has the image upload example
-/* router.post('/profile', fileUploader.single('imageUrl'), (req, res) => {
-  const { title, description } = req.body;
- 
-  Movie.create({ title, description, imageUrl: req.file.path })
-    .then(newlyCreatedMovieFromDB => {
-      console.log(newlyCreatedMovieFromDB);
-    })
-    .catch(error => console.log(`Error while creating a new movie: ${error}`));
-}); */
-
-/* router.post("/logout", isLoggedIn, (req, res) => {
-  if (!req.session) res.redirect('/');
-  req.session.destroy((err) => {
-    if (err) next(err);
-    else res.redirect("/");
-  }); 
-}); 
-*/
-
-/* if(req.file) {
-    User.findByIdAndUpdate( projectid, {description, title, link, imageUrl: req.file.path}, {new: true})
-    .then(() => res.redirect(`/profile/${username}`))
-    .catch(err => next(err))
-  } 
-  if(!req.file) {
-    Project.findByIdAndUpdate( projectid, {description, title, link}, {new: true})
-    .then(() => res.redirect(`/profile/${username}`))
-    .catch(err => next(err))
-  } */
 
 module.exports = router;

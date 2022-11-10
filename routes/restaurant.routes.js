@@ -149,6 +149,12 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       });
     console.log(userRest.restaurants[0].reviews);
     res.render("restaurant/my-restaurants", { userRest });
+
+      if(!userRest){
+        res.redirect('/restaurant/restaurant-create')
+      }
+
+
   } catch (error) {
     console.log(error);
     next(error);
@@ -281,7 +287,7 @@ router.post("/review-delete/:id", async (req, res, next) => {
 /// COMMENTS ///
 ////////////////
 //Comments (Individual Restaurant)
-router.post("/comment/create/:id", async (req, res, next) => {
+router.post("/comment/create/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   const { content } = req.body;
   const author = req.session.currentUser._id;
