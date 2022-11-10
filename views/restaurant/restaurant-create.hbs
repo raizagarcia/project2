@@ -1,11 +1,28 @@
-<h1>Find restaurant</h1>
-<form action="/restaurant-create" method="post" class="flex-form">
-  <div class="user-box">
-    <input type="search" name="name" id="autocomplete" />
-    <input type="submit" value="Next" />
-    <input type="text" name="placeId" id="placeId" hidden />
-    <input type="text" name="imgUrl" id="imgUrl" hidden />
+<div class="hero-image hero-my-restaurants">
+  <div class="hero-text">
+    <h1>Find Restaurant</h1>
   </div>
+</div>
+
+<div class="custom-shape-divider-bottom-1668019210">
+  <svg data-name="Layer 1" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+  </svg>
+</div>
+
+<form class="flex-form" action="/restaurant-create" method="post">
+  <label for="from">
+    <i class="ion-location"></i>
+  </label>
+  <input
+    type="search"
+    name="name"
+    id="autocomplete"
+    placeholder="Where do you want to go?"
+  />
+  <input type="text" name="placeId" id="placeId" hidden />
+  <input type="text" name="imgUrl" id="imgUrl" hidden />
+  <input type="submit" value="Next" />
 </form>
 
 <div class="rest-create">

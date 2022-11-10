@@ -1,30 +1,52 @@
-<h1>Create your review</h1>
-
-<form action="/review-create/{{restId}}" method="post">
-
-  <label for="description"><b>Description</b></label>
-  <br />
-  <textarea name="description" id="description" cols="20" rows="10"></textarea>
-
-  <br />
-  <br />
-
-  <div class="rating">
-    <input type="radio" id="star5" name="rating" value="5" />
-    <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
-    <input type="radio" id="star4" name="rating" value="4" />
-    <label class="star" for="star4" title="Great" aria-hidden="true"></label>
-    <input type="radio" id="star3" name="rating" value="3" />
-    <label class="star" for="star3" title="Good" aria-hidden="true"></label>
-    <input type="radio" id="star2" name="rating" value="2" />
-    <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
-    <input type="radio" id="star1" name="rating" value="1" checked />
-    <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+<div class="hero-image hero-my-restaurants">
+  <div class="hero-text">
+    <h1>Create your review</h1>
   </div>
+</div>
 
-  <br />
-  <br />
+<div class="custom-shape-divider-bottom-1668019210">
+  <svg data-name="Layer 1" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+  </svg>
+</div>
 
-  <button type="submit">Add Review</button>
+<br />
+<br />
+<div class="review-form">
+  <form action="/review-create/{{restId}}" method="post">
 
-</form>
+    <div class="rating">
+      <input type="radio" id="star5" name="rating" value="5" />
+      <label
+        class="star"
+        for="star5"
+        title="Awesome"
+        aria-hidden="true"
+      ></label>
+      <input type="radio" id="star4" name="rating" value="4" />
+      <label class="star" for="star4" title="Great" aria-hidden="true"></label>
+      <input type="radio" id="star3" name="rating" value="3" />
+      <label class="star" for="star3" title="Good" aria-hidden="true"></label>
+      <input type="radio" id="star2" name="rating" value="2" />
+      <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
+      <input type="radio" id="star1" name="rating" value="1" checked />
+      <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+    </div>
+
+    <br />
+    <br />
+
+    <textarea
+      name="description"
+      id="description"
+      cols="20"
+      rows="10"
+    ></textarea>
+
+    <br />
+    <br />
+
+    <button type="submit" class="button-5">Add Review</button>
+
+  </form>
+</div>
