@@ -149,12 +149,12 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       });
     console.log(userRest.restaurants[0].reviews);
     res.render("restaurant/my-restaurants", { userRest });
-
+/* 
       if(!userRest){
         res.redirect('/restaurant/restaurant-create')
       }
 
-
+ */
   } catch (error) {
     console.log(error);
     next(error);
