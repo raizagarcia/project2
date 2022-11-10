@@ -54,7 +54,7 @@ router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
 
     // Obrigar users a preencher os requisitos abaixo - Exemplo
     if (!name) {
-      res.redirect("/error");
+      res.redirect("restaurant-create");
     }
 
     //Check if placeid exists
