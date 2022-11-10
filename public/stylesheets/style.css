@@ -342,7 +342,7 @@ svg {
   display: block;
   width: calc(160% + 1.3px);
   height: 101px;
-  margin-top: 60vh;
+  margin-top: 55vh;
 }
 
 .custom-shape-divider-bottom-1668019210 .shape-fill {
@@ -637,6 +637,8 @@ embed.map {
   padding: 16px;
   max-width: 25vw;
   margin: 25px auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-comments::after {
@@ -649,6 +651,9 @@ embed.map {
   float: left;
   margin-right: 20px;
   border-radius: 50%;
+  max-height: 200px;
+  width: fit-content;
+  margin: 15px auto;
 }
 
 .user-comments form {
@@ -661,6 +666,7 @@ embed.map {
   border-radius: 5px;
   border: none;
   padding: 5px 10px;
+  float: right;
 }
 
 .user-comments form button:hover {

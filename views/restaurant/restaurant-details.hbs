@@ -38,7 +38,7 @@
       alt=""
     />
     <h1>{{restaurant.name}}</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+    <p>Restaurant</p>
     <a href="/review-create/{{restaurant._id}}" class="button-5">Add Restaurant</a>
     </div>
   </div>
@@ -73,10 +73,10 @@
 
 {{#each restaurant.comments}}
   <div class="user-comments">
-    <img src="{{author.imageUrl}}" alt="">
     <form action="/comment/delete/{{_id}}/{{../restaurant._id}}" method="post">
       <button type="submit">X</button>
     </form>
+    <img src="{{author.imageUrl}}" alt="">
     <p>By: <span>{{author.username}}</span></p>
     <p>{{content}}</p>
   </div>
