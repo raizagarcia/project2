@@ -1,0 +1,141 @@
+/* LOGIN */
+#user-forms #login-button {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 30px;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(75, 75, 75, 0.8);
+  overflow: hidden;
+  opacity: 0.4;
+  box-shadow: 10px 10px 30px #e8e6e6;
+}
+
+/* Login container */
+#user-forms #container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 260px;
+  height: fit-content;
+  border-radius: 5px;
+  background: rgb(75 75 75 / 25%);
+  box-shadow: 1px 1px 50px #6f6f6f;
+  display: none;
+  padding: 3vw;
+}
+
+#user-forms .close-btn {
+  position: absolute;
+  cursor: pointer;
+  font-family: "Open Sans Condensed", sans-serif;
+  line-height: 18px;
+  top: 3px;
+  right: 3px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 10px;
+  opacity: 0.8;
+  padding: 10px;
+  -webkit-transition: all 2s ease-in-out;
+  -moz-transition: all 2s ease-in-out;
+  -o-transition: all 2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+#user-forms .close-btn:hover {
+  opacity: 1;
+}
+
+/* Heading */
+#user-forms h1 {
+  font-family: "Open Sans Condensed", sans-serif;
+  position: relative;
+  margin-top: 0px;
+  text-align: center;
+  font-size: 40px;
+  color: #ddd;
+  text-shadow: 3px 3px 10px #000;
+}
+
+/* Inputs */
+#user-forms a,
+#user-forms input {
+  font-family: "Open Sans Condensed", sans-serif;
+  text-decoration: none;
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 9px auto;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  background: rgba(3, 3, 3, 0.1);
+  -webkit-transition: all 2s ease-in-out;
+  -moz-transition: all 2s ease-in-out;
+  -o-transition: all 2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+#user-forms #currentImg {
+  display: none;
+}
+
+#user-forms input {
+  padding: 10px;
+}
+
+#user-forms input:focus {
+  outline: none;
+  box-shadow: 3px 3px 10px #333;
+  background: rgba(3, 3, 3, 0.18);
+}
+
+/* Placeholders */
+#user-forms ::-webkit-input-placeholder {
+  color: #ddd;
+}
+#user-forms :-moz-placeholder {
+  /* Firefox 18- */
+  color: red;
+}
+#user-forms ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: red;
+}
+#user-forms :-ms-input-placeholder {
+  color: #333;
+}
+
+/* Link */
+#user-forms a,
+.home-btn {
+  font-family: "Open Sans Condensed", sans-serif;
+  text-align: center;
+  padding: 10px 0;
+  background: rgba(107, 255, 3, 0.3);
+}
+
+#user-forms a.user-logout-style {
+  background: rgba(218, 70, 70, 0.3);
+}
+
+#user-forms a:hover,
+.home-btn:hover {
+  opacity: 0.7;
+}
+
+#user-forms .orange-btn {
+  background: rgba(87, 198, 255, 0.5);
+}

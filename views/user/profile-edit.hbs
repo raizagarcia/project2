@@ -1,19 +1,49 @@
-<form
-  action="/auth/profile-edit/{{_id}}"
-  method="post"
-  enctype="multipart/form-data"
->
+<style type="text/css">
+  html { background: url('/images/user-form_background.jpeg') no-repeat center
+  center fixed; -webkit-background-size: cover; -moz-background-size: cover;
+  -o-background-size: cover; background-size: cover; overflow: hidden; } img {
+  display: block; margin: auto; width: 100%; height: auto; } .footer{display:
+  none;}
+</style>
 
-  <label for="name"><b>Name</b></label>
-  <br />
-  <input type="text" name="username" id="name" value="{{username}}" required />
+<div id="user-forms">
+  <div id="container">
+    <h1>Edit your profile</h1>
 
-  <div class="form-group">
-    <label for="image">
-      Profile photo:
-      <input type="file" name="image" class="form-control-file" />
-    </label>
+    <form
+      action="/auth/profile-edit/{{_id}}"
+      method="POST"
+      id="user-form"
+      enctype="multipart/form-data"
+    >
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        id="username"
+        value="{{username}}"
+        required
+      />
+      <input type="file" name="image" required />
+      <input
+        type="text"
+        name="currentImg"
+        value="imageUrl"
+        id="currentImg"
+        hidden
+      />
+      <a
+        href="#"
+        onclick="document.getElementById('user-form').submit();"
+      >Edit</a>
+
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
+    </form>
   </div>
-  <input type="text" name="currentImg" value="imageUrl" hidden />
-  <button type="submit">Save changes</button>
-</form>
+</div>
+
+<script>
+  document.getElementById("container").style.display = "block";
+</script>

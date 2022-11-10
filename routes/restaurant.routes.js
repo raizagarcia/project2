@@ -57,19 +57,29 @@ router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
       res.redirect("/error");
     }
 
-    const createdRestaurant = await Restaurant.create({
-      name,
-      imgRestaurant: imgUrl,
-      placeId,
-    });
+    //Check if placeid exists
+
+    let restaurantToAdd;
+
+    const restaurantExists = await Restaurant.findOne({ placeId });
+
+    if (restaurantExists) {
+      restaurantToAdd = restaurantExists;
+    } else {
+      restaurantToAdd = await Restaurant.create({
+        name,
+        imgRestaurant: imgUrl,
+        placeId,
+      });
+    }
 
     const userId = req.session.currentUser._id;
     const userRest = await User.findByIdAndUpdate(userId, {
-      $push: { restaurants: createdRestaurant._id },
+      $push: { restaurants: restaurantToAdd._id },
     });
-
+    //--------------------------------
     // Redirecciona para a review
-    res.redirect(`/review-create/${createdRestaurant._id}`);
+    res.redirect(`/review-create/${restaurantToAdd._id}`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -130,6 +140,7 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       restaurant.author == req.session.currentUser._id;
     });
     console.log(userReviews); */
+
     const userId = req.session.currentUser._id;
     const userRest = await User.findById(userId)
       .populate("restaurants")
@@ -147,14 +158,20 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
           model: "User",
         },
       });
-    console.log(userRest.restaurants[0].reviews);
-    res.render("restaurant/my-restaurants", { userRest });
-/* 
-      if(!userRest){
-        res.redirect('/restaurant/restaurant-create')
-      }
 
- */
+    let test = userRest.restaurants.map((restaurant) => {
+      if (restaurant.reviews.length > 1) {
+        let userReview = restaurant.reviews.filter(
+          (review) => review.author._id == userId
+        );
+        restaurant.reviews = userReview;
+        return restaurant;
+      } else {
+        return restaurant;
+      }
+    });
+
+    res.render("restaurant/my-restaurants", { userRest });
   } catch (error) {
     console.log(error);
     next(error);
@@ -164,13 +181,28 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
 // Individual restaurant - details route (review-details.hbs)
 router.get("/review-details/:id", isLoggedIn, async (req, res, next) => {
   try {
+    const userId = req.session.currentUser._id;
+    //Restaurant id
     const id = req.params.id;
+    const restaurant = await Restaurant.findById(id)
+      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "restaurant",
+          ref: "Restaurant",
+        },
+      });
+
+    const review = restaurant.reviews.filter(
+      (review) => review.author == userId
+    )[0];
     //get all the users
     //const users = await User.find();
     //get all the restaurants
     //const restaurants = await Restaurant.find();
     //get the specific review
-    const review = await Review.findById(id).populate("restaurant");
+
     console.log(review);
 
     res.render("restaurant/review-details", review);
@@ -213,9 +245,15 @@ router.post("/review-create/:id", isLoggedIn, async (req, res, next) => {
       },
     });
 
-    const userUpdate = await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userId, {
       $push: {
         reviews: createdReview._id,
+      },
+    });
+
+    await User.findByIdAndUpdate(userId, {
+      $push: {
+        restaurants: createdReview.restaurant,
       },
     });
 
@@ -247,7 +285,7 @@ router.post("/review-edit/:id", async (req, res, next) => {
       rating,
     });
     // Em vez de fazer render, redirecciona para o restaurante acabado de editar
-    res.redirect(`/review-details/${updatedReview._id}`);
+    res.redirect(`/review-details/${updatedReview.restaurant}`);
   } catch (error) {
     console.log(error);
     next(error);
@@ -317,18 +355,22 @@ router.post("/comment/create/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/comment/delete/:id/:restaurantId", async (req, res, next) => {
-  const { id, restaurantId } = req.params;
-  try {
-    const removedComment = await Comment.findByIdAndRemove(id);
-    await User.findByIdAndUpdate(removedComment.author, {
-      $pull: { comments: removedComment._id },
-    });
-    res.redirect(`/restaurant-details/${restaurantId}`);
-  } catch (error) {
-    console.log(error);
-    next(error);
+router.post(
+  "/comment/delete/:id/:restaurantId",
+  isLoggedIn,
+  async (req, res, next) => {
+    const { id, restaurantId } = req.params;
+    try {
+      const removedComment = await Comment.findByIdAndRemove(id);
+      await User.findByIdAndUpdate(removedComment.author, {
+        $pull: { comments: removedComment._id },
+      });
+      res.redirect(`/restaurant-details/${restaurantId}`);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;

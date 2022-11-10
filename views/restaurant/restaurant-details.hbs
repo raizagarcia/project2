@@ -38,7 +38,8 @@
       alt=""
     />
     <h1>{{restaurant.name}}</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+    <p>Restaurant</p>
+    <a href="/review-create/{{restaurant._id}}" class="button-5">Add Restaurant</a>
     </div>
   </div>
 </div>
@@ -46,35 +47,37 @@
 <br />
 <br />
 
-<div id="map" style="height: 250px"></div>
+<embed class="map" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBTglNnXapmziUofnsiT1-pAufIijQdzZc&q=place_id:{{restaurant.placeId}}"></embed>
 
-<form action="/restaurant-create" method="post" class="flex-form">
-    <input type="submit" value="Next" />
-</form>
+<br />
+<br />
 
-<hr />
+  <div class="user-comment-box">
+    <h1>Leave a comment</h1>
 
-<embed src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBTglNnXapmziUofnsiT1-pAufIijQdzZc&q=place_id:{{restaurant.placeId}}"></embed>
+    <form action="/comment/create/{{restaurant._id}}" method="post">
 
-<hr />
-
-<h4>Leave a comment</h4>
-
-<form action="/comment/create/{{restaurant._id}}" method="post">
-
-  <input type="text" name="placeId" id="placeId" hidden />
-  <label for="content"></label>
-  <textarea name="content" id="content" cols="30" rows="10"></textarea>
-  <button type="submit">Comment</button>
-</form>
+      <input type="text" name="placeId" id="placeId" hidden />
+      <label for="content"></label>
+      <textarea name="content" id="content" cols="30" rows="10"></textarea>
+      <button type="submit" class="button-5">Add Comment</button>
+    </form>
+  </div>
+<br />
+<br />
 
 <hr />
+
+<br />
+<br />
 
 {{#each restaurant.comments}}
-  <div>
-    <p><span>By {{author.username}}: </span>{{content}}</p>
+  <div class="user-comments">
     <form action="/comment/delete/{{_id}}/{{../restaurant._id}}" method="post">
       <button type="submit">X</button>
     </form>
+    <img src="{{author.imageUrl}}" alt="">
+    <p>By: <span>{{author.username}}</span></p>
+    <p>{{content}}</p>
   </div>
 {{/each}}

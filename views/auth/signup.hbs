@@ -1,24 +1,57 @@
-<div id="form">
-  <h2>Sign Up</h2>
-  <form action="/auth/signup" method="POST">
+<style type="text/css">
+html {
+  background: url('/images/user-form_background.jpeg')
+    no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: hidden;
+}
 
-    <label> Username
-      <input type="text" name="username" placeholder="Your username" />
-    </label>
+img {
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: auto;
+}
+.footer{
+display: none;
+}
+</style>
 
-    <label> Email
-      <input type="email" name="email" placeholder="Your email" />
-    </label>
+<div id="user-forms">
+  <div id="login-button" onclick="openBtb()">
+    <img src="/images/login-user_icon.png">
+    </img>
+  </div>
+  <div id="container">
+    <h1>Sign up</h1>
+    <span class="close-btn" onclick="closeBtn()">
+      <img src="/images/close-btn.png"></img>
+    </span>
 
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
+    <form action="/auth/signup" method="POST" id="user-form">
+      <input type="text" name="username" placeholder="Username" id="username">
+      <input type="email" name="email" placeholder="E-mail" id="email" required>
+      <input type="password" name="password" placeholder="Password" id="password" required>
+      <a href="#" onclick="document.getElementById('user-form').submit();">Sign up</a>
 
-    <button type="submit">Sign Up</button>
-
-
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
   </form>
+  </div>
 </div>
+
+<script>
+  function openBtb() {
+    document.getElementById("login-button").style.display = "none";
+    document.getElementById("container").style.display = "block";
+  }
+
+  function closeBtn() {
+    document.getElementById("login-button").style.display = "block";
+    document.getElementById("container").style.display = "none";
+  }
+</script>
