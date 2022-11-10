@@ -6,11 +6,59 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{appTitle}}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
 
   <body>
 
+    <div id="preloader">
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <div id="myNav" class="overlay">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="closeNav()"
+      >&times;</a>
+      <div class="overlay-content">
+        <a href="/">Home</a>
+        <a href="/restaurant-list/">Restaurants</a>
+        <a href="/restaurant-create/">Create Restaurant</a>
+        <a href="/auth/login">Login</a>
+        <a href="/auth/signup">Signup</a>
+        <a href="/auth/profile">Profile</a>
+        <a href="/my-restaurants">My Restaurants</a>
+      </div>
+    </div>
+
+    <span class="menu-icon" onclick="openNav()">&#9776;</span>
+
     {{{body}}}
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTglNnXapmziUofnsiT1-pAufIijQdzZc&libraries=places&callback=initMap"
+      async
+      defer
+    >
+    </script>
+
+    {{! <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTglNnXapmziUofnsiT1-pAufIijQdzZc&libraries=places&callback=initAutocomplete"
+      async
+      defer
+    >
+    </script> }}
 
     <script src="/js/script.js"></script>
   </body>

@@ -1,0 +1,64 @@
+<div class="hero-image hero-my-restaurants">
+  <div class="hero-text">
+    <h1>{{restaurant.name}}</h1>
+  </div>
+</div>
+
+
+<div class="custom-shape-divider-bottom-1668019210">
+  <svg
+    data-name="Layer 1"
+    viewBox="0 0 1200 120"
+    preserveAspectRatio="none"
+  >
+    <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+  </svg>
+</div>
+
+<br />
+<br />
+
+<div class="row-restaurants">
+  <div class="column column-left">
+    <div class="column-inner">
+      <img
+        src="{{restaurant.imgRestaurant}}"
+        width="100%"
+        height="auto"
+        id="imgRestaurant"
+        class="scale-center"
+      />
+    </div>
+  </div>
+  <div class="column column-right">
+    <div class="column-inner">
+    <img
+      class="card__thumb slide-bottom"
+      src="/images/restaurante-list_icon.png"
+      alt=""
+    />
+    <h1>{{restaurant.name}}</h1>
+    <div class="rating">
+      <input type="radio" id="star5" name="rating" value="5" disabled {{#is rating 5}} checked {{/is}} />
+      <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
+      <input type="radio" id="star4" name="rating" value="4" disabled {{#is rating 4}} checked {{/is}} />
+      <label class="star" for="star4" title="Great" aria-hidden="true"></label>
+      <input type="radio" id="star3" name="rating" value="3" disabled {{#is rating 3}} checked {{/is}} />
+      <label class="star" for="star3" title="Good" aria-hidden="true"></label>
+      <input type="radio" id="star2" name="rating" value="2" disabled {{#is rating 2}} checked {{/is}} />
+      <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
+      <input type="radio" id="star1" name="rating" value="1" disabled {{#is rating 1}} checked {{/is}} />
+      <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+    </div>
+    <p>Notes: {{description}}</p>
+    <a href="/review-edit/{{_id}}">Edit restaurant</a>
+    <form action="/review-delete/{{_id}}" method="post">
+      <button type="submit">Delete restaurant</button>
+    </form>
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+<div id="map" style="height: 250px"></div>

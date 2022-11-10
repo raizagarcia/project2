@@ -1,0 +1,28 @@
+<h1>Find rest</h1>
+<form action="/restaurant-create" method="post" class="flex-form">
+  <div class="user-box">
+    <input type="search" name="name" id="autocomplete" />
+    <input type="submit" value="Next" />
+    <input type="text" name="placeId" id="placeId" hidden />
+    <input type="text" name="imgUrl" id="imgUrl" hidden />
+  </div>
+</form>
+
+<div class="rest-create">
+
+  <div class="row">
+    <div class="column">
+      <img
+        src="https://www.w3schools.com/howto/photographer.jpg"
+        width="100%"
+        height="auto"
+        name="imgRestaurant"
+        id="imgRestaurant"
+      />
+    </div>
+    <div class="column">
+      <div id="map"></div>
+    </div>
+  </div>
+
+</div>

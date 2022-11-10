@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fileUploader = require("../config/cloudinary.config");
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -141,16 +142,67 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     .catch((err) => next(err));
 });
 
+router.get("/profile", isLoggedIn, (req, res) => {
+  const user = req.session.currentUser;
+  console.log(user);
+  res.render("auth/profile", user);
+});
+
+// Display a página de Edit routes (profile-edit.hbs)
+router.get("/profile-edit/:id", async (req, res, next) => {
+  try {
+    const updateUser = await User.findById(req.params.id);
+    res.render("user/profile-edit", updateUser);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+// Receber a informação do EDIT form- POST (profile-edit.hbs)
+router.post(
+  "/profile-edit/:id",
+  isLoggedIn,
+  fileUploader.single("image"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { username, currentImg } = req.body;
+
+      let imageUrl;
+      if (req.file) {
+        imageUrl = req.file.path;
+      } else {
+        imageUrl = currentImg;
+      }
+      console.log(imageUrl);
+
+      let updatedUser = await User.findByIdAndUpdate(
+        id,
+        { username, imageUrl },
+        { new: true }
+      );
+
+      req.session.currentUser = updatedUser;
+      console.log(updatedUser);
+      res.redirect(`/auth/profile`);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+);
+
 // GET /auth/logout
 router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
-      return;
+      return res
+        .status(500)
+        .render("auth/logout", { errorMessage: err.message });
     }
-
     res.redirect("/");
   });
 });
+
 
 module.exports = router;
