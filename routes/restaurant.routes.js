@@ -149,7 +149,7 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       });
     console.log(userRest.restaurants[0].reviews);
     res.render("restaurant/my-restaurants", { userRest });
-/* 
+    /* 
       if(!userRest){
         res.redirect('/restaurant/restaurant-create')
       }
@@ -164,13 +164,28 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
 // Individual restaurant - details route (review-details.hbs)
 router.get("/review-details/:id", isLoggedIn, async (req, res, next) => {
   try {
+    const userId = req.session.currentUser._id;
+    //Restaurant id
     const id = req.params.id;
+    const restaurant = await Restaurant.findById(id)
+      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "restaurant",
+          ref: "Restaurant",
+        },
+      });
+
+    const review = restaurant.reviews.filter(
+      (review) => review.author == userId
+    )[0];
     //get all the users
     //const users = await User.find();
     //get all the restaurants
     //const restaurants = await Restaurant.find();
     //get the specific review
-    const review = await Review.findById(id).populate("restaurant");
+
     console.log(review);
 
     res.render("restaurant/review-details", review);
@@ -247,7 +262,7 @@ router.post("/review-edit/:id", async (req, res, next) => {
       rating,
     });
     // Em vez de fazer render, redirecciona para o restaurante acabado de editar
-    res.redirect(`/review-details/${updatedReview._id}`);
+    res.redirect(`/review-details/${updatedReview.restaurant}`);
   } catch (error) {
     console.log(error);
     next(error);

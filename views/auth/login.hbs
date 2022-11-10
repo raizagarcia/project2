@@ -1,27 +1,54 @@
-<div id="login-form" class="login-box">
-  <h2>Log In</h2>
-  <form action="/auth/login" method="POST" class="card-form">
 
-    <div class="user-box">
-      <input type="email" name="email" id="email" required />
-      <label for="email">Email</label>
-    </div>
+<style type="text/css">
+html {
+  background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg)
+    no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: hidden;
+}
 
-    <div class="user-box">
-      <input type="password" name="password" id="password" required />
-      <label for="password">Password</label>
-    </div>
+img {
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: auto;
+}
+</style>
 
-    <button type="submit">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Login
-    </button>
+<div id="user-forms">
+  <div id="login-button" onclick="openBtb()">
+    <img src="https://dqcgrsy5v35b9.cloudfront.net/cruiseplanner/assets/img/icons/login-w-icon.png">
+    </img>
+  </div>
+  <div id="container">
+    <h1>Log In</h1>
+    <span class="close-btn" onclick="closeBtn()">
+      <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
+    </span>
 
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
+    <form action="/auth/login" method="POST" id="user-form">
+      <input type="email" name="email" placeholder="E-mail" id="email" required>
+      <input type="password" name="password" placeholder="Password" id="password" required>
+      <a href="#" onclick="document.getElementById('user-form').submit();">Log in</a>
+
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
   </form>
+  </div>
 </div>
+
+<script>
+  function openBtb() {
+    document.getElementById("login-button").style.display = "none";
+    document.getElementById("container").style.display = "block";
+  }
+
+  function closeBtn() {
+    document.getElementById("login-button").style.display = "block";
+    document.getElementById("container").style.display = "none";
+  }
+</script>
