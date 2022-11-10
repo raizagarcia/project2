@@ -391,6 +391,7 @@ svg {
   background-color: var(--surface-color);
   transform: translateY(100%);
   transition: 0.2s ease-in-out;
+  text-align: center;
 }
 
 .card:hover .card__overlay {
@@ -760,4 +761,6 @@ input[type="search"] {
   border-top: 1px solid #eee;
   padding: 20px 0;
   text-align: center;
+  box-shadow: 0px 0px 2px #888, 0px 9px 25px #888;
+  z-index: 3;
 }
