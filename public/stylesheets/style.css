@@ -581,6 +581,19 @@ svg {
   transform: translateY(0);
 }
 
+.btn-delete {
+  background-color: #d92616;
+}
+
+.btn-delete:hover,
+.btn-delete:focus {
+  background-color: #e0493b;
+}
+
+.btn-delete:active {
+  background-color: #e0493b;
+}
+
 /* MAP */
 embed.map {
   width: 100%;
@@ -695,12 +708,32 @@ input[type="search"] {
   flex-basis: 500px;
 }
 
-/* REVIEW FORM */
+/* REVIEW */
 .review-form {
   position: relative;
   text-align: center;
+  margin: 25px 0 50px;
 }
 
 .review-form .rating {
   justify-content: center;
+}
+
+.review-btns {
+  display: flex;
+}
+
+.review-btns form {
+  margin: 0;
+}
+
+/* FOOTER */
+.footer {
+  font-size: 18px;
+  width: 100%;
+  background-color: white;
+  color: #333;
+  border-top: 1px solid #eee;
+  padding: 20px 0;
+  text-align: center;
 }

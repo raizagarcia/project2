@@ -51,10 +51,12 @@
       <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
     </div>
     <p>Notes: {{description}}</p>
-    <a href="/review-edit/{{_id}}">Edit restaurant</a>
-    <form action="/review-delete/{{_id}}" method="post">
-      <button type="submit">Delete restaurant</button>
-    </form>
+    <div class="review-btns">
+      <a href="/review-edit/{{_id}}" class="button-5">Edit</a>
+      <form action="/review-delete/{{_id}}" method="post">
+        <button type="submit" class="button-5 btn-delete">Delete</button>
+      </form>
+    </div>
     </div>
   </div>
 </div>
