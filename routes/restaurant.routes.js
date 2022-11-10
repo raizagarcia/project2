@@ -130,31 +130,31 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
       restaurant.author == req.session.currentUser._id;
     });
     console.log(userReviews); */
+    
     const userId = req.session.currentUser._id;
     const userRest = await User.findById(userId)
-      .populate("restaurants")
-      .populate({
-        path: "restaurants",
-        populate: {
-          path: "reviews",
-          model: "Review",
-        },
-      })
-      .populate({
+    .populate("restaurants")
+    .populate({
+      path: "restaurants",
+      populate: {
         path: "reviews",
-        populate: {
-          path: "author",
-          model: "User",
-        },
-      });
+        model: "Review",
+      },
+    })
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "author",
+        model: "User",
+      },
+    });
     console.log(userRest.restaurants[0].reviews);
+    
+  /*   if(!userRest){
+      res.redirect('/restaurant-create')
+    } */
+    
     res.render("restaurant/my-restaurants", { userRest });
-    /* 
-      if(!userRest){
-        res.redirect('/restaurant/restaurant-create')
-      }
-
- */
   } catch (error) {
     console.log(error);
     next(error);
