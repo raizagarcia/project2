@@ -16,7 +16,7 @@
   {{#each userRest.restaurants}}
     <li>
       <div class="card">
-        <a href="/review-details/{{reviews._id}}"><img
+        <a href="/review-details/{{_id}}"><img
             src="{{imgRestaurant}}"
             class="card__image"
             alt=""
@@ -31,31 +31,36 @@
             />
             <div class="card__header-text">
               <h3 class="card__title">{{name}}</h3>
-              <span class="card__status">
 
-          <div>
-            <div class="rating">
-              <input type="radio" id="star1" name="rating" value="1" disabled {{#is rating 1}} checked {{/is}} />
-              <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
-              <input type="radio" id="star2" name="rating" value="2" disabled {{#is rating 2}} checked {{/is}} />
-              <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
-              <input type="radio" id="star3" name="rating" value="3" disabled {{#is rating 3}} checked {{/is}} />
-              <label class="star" for="star3" title="Good" aria-hidden="true"></label>
-              <input type="radio" id="star4" name="rating" value="4" disabled {{#is rating 4}} checked {{/is}} />
-              <label class="star" for="star4" title="Great" aria-hidden="true"></label>
-              <input type="radio" id="star5" name="rating" value="5" disabled {{#is rating 5}} checked {{/is}} />
-              <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
-            </div>
-          </div></span>
-            </div>
-          </div>
-          
+
+
           {{#each reviews}}
-
-          <p>{{description}}</p>
-
+              <span class="card__status">
+                <div>
+                  <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" disabled {{#is rating 5}} checked {{/is}} />
+                    <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
+                    <input type="radio" id="star4" name="rating" value="4" disabled {{#is rating 4}} checked {{/is}} />
+                    <label class="star" for="star4" title="Great" aria-hidden="true"></label>
+                    <input type="radio" id="star3" name="rating" value="3" disabled {{#is rating 3}} checked {{/is}} />
+                    <label class="star" for="star3" title="Good" aria-hidden="true"></label>
+                    <input type="radio" id="star2" name="rating" value="2" disabled {{#is rating 2}} checked {{/is}} />
+                    <label class="star" for="star2" title="Ok" aria-hidden="true"></label>
+                    <input type="radio" id="star1" name="rating" value="1" disabled {{#is rating 1}} checked {{/is}} />
+                    <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+                  </div>
+                </div>
+              </span>
+          
+        
           {{/each}}
 
+            </div>
+
+          </div>
+  {{#each reviews}}
+          <p>{{description}}</p>
+          {{/each}}
         </div>
       </div>
     </li>

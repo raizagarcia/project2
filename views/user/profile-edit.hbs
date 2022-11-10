@@ -1,4 +1,23 @@
-<form
+<style type="text/css">
+html {
+  background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg)
+    no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: auto;
+}
+</style>
+
+{{!-- <form
   action="/auth/profile-edit/{{_id}}"
   method="post"
   enctype="multipart/form-data"
@@ -16,4 +35,46 @@
   </div>
   <input type="text" name="currentImg" value="imageUrl" hidden />
   <button type="submit">Save changes</button>
-</form>
+</form> --}}
+
+
+<div id="user-forms">
+  <div id="login-button" onclick="openBtb()">
+    <img src="https://dqcgrsy5v35b9.cloudfront.net/cruiseplanner/assets/img/icons/login-w-icon.png">
+    </img>
+  </div>
+  <div id="container">
+    <h1>Edit your profile</h1>
+    <span class="close-btn" onclick="closeBtn()">
+      <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
+    </span>
+
+    <form action="/auth/profile-edit/{{_id}}" method="POST" id="user-form">
+      <input type="text" name="username" placeholder="Username" id="username" value="{{username}}" required />
+      <div class="form-group">
+        <label for="image">
+          Profile photo:
+          <input type="file" name="image" class="form-control-file" />
+        </label>
+      </div>
+      <input type="text" name="currentImg" value="imageUrl" id="currentImg" hidden />
+      <a href="#" onclick="document.getElementById('user-form').submit();">Edit</a>
+
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
+  </form>
+  </div>
+</div>
+
+<script>
+  function openBtb() {
+    document.getElementById("login-button").style.display = "none";
+    document.getElementById("container").style.display = "block";
+  }
+
+  function closeBtn() {
+    document.getElementById("login-button").style.display = "block";
+    document.getElementById("container").style.display = "none";
+  }
+</script>
