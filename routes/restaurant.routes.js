@@ -67,7 +67,7 @@ router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
     const userRest = await User.findByIdAndUpdate(userId, {
       $push: { restaurants: createdRestaurant._id },
     });
-
+    //--------------------------------
     // Redirecciona para a review
     res.redirect(`/review-create/${createdRestaurant._id}`);
   } catch (error) {
@@ -328,7 +328,7 @@ router.post("/comment/create/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/comment/delete/:id/:restaurantId", async (req, res, next) => {
+router.post("/comment/delete/:id/:restaurantId", isLoggedIn, async (req, res, next) => {
   const { id, restaurantId } = req.params;
   try {
     const removedComment = await Comment.findByIdAndRemove(id);
