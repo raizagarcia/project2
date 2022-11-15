@@ -77,6 +77,7 @@ router.post("/restaurant-create", isLoggedIn, async (req, res, next) => {
     const userRest = await User.findByIdAndUpdate(userId, {
       $push: { restaurants: restaurantToAdd._id },
     });
+    console.log("_______________Trigger")
     //--------------------------------
     // Redirecciona para a review
     res.redirect(`/review-create/${restaurantToAdd._id}`);
@@ -159,6 +160,7 @@ router.get("/my-restaurants", isLoggedIn, async (req, res, next) => {
         },
       });
 
+      console.log(userRest.restaurants)
     let test = userRest.restaurants.map((restaurant) => {
       if (restaurant.reviews.length > 1) {
         let userReview = restaurant.reviews.filter(
@@ -251,12 +253,19 @@ router.post("/review-create/:id", isLoggedIn, async (req, res, next) => {
       },
     });
 
-    await User.findByIdAndUpdate(userId, {
-      $push: {
-        restaurants: createdReview.restaurant,
-      },
-    });
+    const userToUpdate = await User.findById(userId)
 
+    if(!userToUpdate.restaurants.includes(restaurantId)){
+      
+      await User.findByIdAndUpdate(userId, {
+        $push: {
+          restaurants: createdReview.restaurant,
+        },
+      });
+    }
+  
+
+    
     // Em vez de fazer render, redirecciona para o restaurante acabado de criar
     res.redirect(`/my-restaurants`);
   } catch (error) {
